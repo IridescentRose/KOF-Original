@@ -2,10 +2,13 @@
 #include "../State/GameState.h"
 #include "../GameDialog.h"
 #include <Graphics/UI/UIButton.h>
+#include <Audio/AudioClip.h>
 
+using namespace Stardust;
 using namespace Stardust::Graphics;
 
 enum MenuStates {
+	MENU_MAIN,
 	MENU_INSTRUCTION,
 	MENU_CREDITS
 };
@@ -38,8 +41,17 @@ private:
 	UI::UIText* crdt;
 	UI::UIText* exit;
 
+
+	UI::UIText* instructions;
+	UI::UIText* credits;
+
 	Render2D::Sprite2* logo;
 	Texture* log;
 
 	GameStateManager* stateMan;
+	Audio::AudioClip* mainTheme;
+	Audio::AudioClip* click;
+
+
+	
 };

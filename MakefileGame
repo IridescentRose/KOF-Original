@@ -1,6 +1,7 @@
 TARGET = PSPAGJ
 OBJS = src/Application.o \
 src/State/StateManager.o \
+src/GameDialog.o \
 src/Main.o 
 
 INCDIR = $(PSPPATH)/include

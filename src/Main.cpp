@@ -11,7 +11,6 @@ using namespace Stardust;
 
 int main() {
 	Platform::initPlatform();
-	Graphics::g_RenderCore.SetClearColor(255, 255, 255, 255);
 
 	Application* app = new Application();
 	app->run();

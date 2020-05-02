@@ -1,5 +1,6 @@
 #pragma once
 #include "State/StateManager.h"
+#include "GameDialog.h"
 
 class Application {
 public:
@@ -17,4 +18,5 @@ public:
 
 private:
 	GameStateManager* gsm;
+	GameDialog* dialog;
 };

@@ -2,6 +2,7 @@ TARGET = PSPAGJ
 OBJS = src/Application.o \
 src/State/StateManager.o \
 src/States/Intro.o \
+src/States/Menu.o \
 src/GameDialog.o \
 src/Main.o 
 
@@ -21,7 +22,7 @@ LIBS= -lstardust -lpng -lpspaudiolib -lpspaudio -lpspaudiocodec -lintraFont -lz 
 
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = PSP Awakening Game Jam
-#PSP_EBOOT_ICON = ICON0.png
+PSP_EBOOT_ICON = ICON0.png
 #PSP_EBOOT_PIC1 = PIC1.png
 
 PSPSDK=$(shell psp-config --pspsdk-path)

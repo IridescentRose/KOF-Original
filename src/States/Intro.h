@@ -3,6 +3,7 @@
 #include "../GameDialog.h"
 #include <Graphics/2D/SpriteBase.h>
 #include <Utilities/Timer.h>
+#include "Menu.h"
 
 using namespace Stardust::Graphics;
 

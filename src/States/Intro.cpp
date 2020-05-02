@@ -26,6 +26,9 @@ void IntroState::init()
 
 void IntroState::cleanup()
 {
+	delete dialog;
+	delete tex;
+	delete logo;
 }
 
 
@@ -63,6 +66,13 @@ void IntroState::draw(GameStateManager* st)
 		changeState1();
 		dialog->animateStep();
 		dialog->draw();
+
+		if (stage == 5) {
+			MenuState* str = new MenuState();
+			str->init();
+
+			st->changeState(str);
+		}
 	}
 
 }
@@ -81,10 +91,6 @@ void IntroState::changeState1()
 		delete tex;
 		tex = TextureUtil::LoadPng("assets/logo/awakening.png");
 		logo->tex = tex;
-	}
-
-	if (stage == 5) {
-		//Go to menu
 	}
 }
 

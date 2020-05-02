@@ -16,6 +16,7 @@ int main() {
 	app->run();
 
 	Graphics::g_RenderCore.Set2DMode();
+	Graphics::g_RenderCore.SetClearColor(0, 0, 0, 255);
 
 	while (app->isRunning()) {
 		Graphics::g_RenderCore.BeginCommands();

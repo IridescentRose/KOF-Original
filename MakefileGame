@@ -1,6 +1,7 @@
 TARGET = PSPAGJ
 OBJS = src/Application.o \
 src/State/StateManager.o \
+src/States/Intro.o \
 src/GameDialog.o \
 src/Main.o 
 

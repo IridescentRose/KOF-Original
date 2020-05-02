@@ -1,6 +1,6 @@
 #pragma once
 #include <Graphics/UI/UIText.h>
-
+#include <Graphics/2D/SpriteAdvanced.h>
 
 using namespace Stardust::Graphics;
 

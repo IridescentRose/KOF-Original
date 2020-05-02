@@ -15,6 +15,8 @@ int main() {
 	Application* app = new Application();
 	app->run();
 
+	Graphics::g_RenderCore.Set2DMode();
+
 	while (app->isRunning()) {
 		Graphics::g_RenderCore.BeginCommands();
 		Graphics::g_RenderCore.Clear();

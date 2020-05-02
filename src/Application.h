@@ -18,5 +18,4 @@ public:
 
 private:
 	GameStateManager* gsm;
-	GameDialog* dialog;
 };

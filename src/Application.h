@@ -1,4 +1,5 @@
 #pragma once
+#include "State/StateManager.h"
 
 class Application {
 public:
@@ -11,9 +12,9 @@ public:
 	void draw();
 
 	inline bool isRunning() {
-		return running;
+		return gsm->isRunning();
 	}
 
 private:
-	bool running;
+	GameStateManager* gsm;
 };

@@ -2,7 +2,7 @@
 
 Application::Application()
 {
-	running = false;
+
 }
 
 Application::~Application()
@@ -11,14 +11,19 @@ Application::~Application()
 
 void Application::run()
 {
-	running = true;
 	//We'll initialize stuff here.
+	gsm = new GameStateManager();
+
+	//Set Up Some Sort of chain loading
+	//gsm->changeState();
 }
 
 void Application::update()
 {
+	gsm->update();
 }
 
 void Application::draw()
 {
+	gsm->draw();
 }

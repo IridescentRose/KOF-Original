@@ -2,6 +2,7 @@
 #include "../State/GameState.h"
 #include "../GameDialog.h"
 #include <Graphics/UI/UIButton.h>
+#include "Tutorial.h"
 #include <Audio/AudioClip.h>
 
 using namespace Stardust;

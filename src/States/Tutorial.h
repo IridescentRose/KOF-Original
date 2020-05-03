@@ -4,6 +4,7 @@
 #include <Graphics/2D/SpriteBase.h>
 #include <Utilities/Timer.h>
 #include "Menu.h"
+#include <Graphics/2D/Tilemap.h>
 
 using namespace Stardust::Graphics;
 
@@ -22,8 +23,8 @@ public:
 	void draw(GameStateManager* st);
 
 private:
-	GameDialog* dialog;
-	Render2D::Sprite* logo;
-	Texture* tex;
+	Texture* texAtlas;
+	TextureAtlas* atlas;
+	Render2D::Tilemap* tmap;
 	int stage;
 };

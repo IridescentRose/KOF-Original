@@ -1,2 +1,3 @@
-# PSP-AGJ
-PSP Awakening Game Jam
+# Kingdom Of Flesh
+
+An entry for the first PSP Awakening Game Jam!

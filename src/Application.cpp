@@ -15,10 +15,19 @@ void Application::run()
 	//We'll initialize stuff here.
 	gsm = new GameStateManager();
 
+#ifndef KOF_DEBUG
 	//Set Up Some Sort of chain loading
 	IntroState* st = new IntroState();
 	st->init();
 	gsm->changeState(st);
+#else
+
+	TutorialState* tst = new TutorialState();
+	tst->init();
+
+	gsm->changeState(tst);
+
+#endif
 }
 
 void Application::update()

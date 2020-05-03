@@ -5,6 +5,7 @@
 #include <Utilities/Timer.h>
 #include "Menu.h"
 #include <Graphics/2D/Tilemap.h>
+#include <Graphics/2D/TopDownController.h>
 
 using namespace Stardust::Graphics;
 
@@ -23,8 +24,10 @@ public:
 	void draw(GameStateManager* st);
 
 private:
-	Texture* texAtlas;
+	Texture* texAtlas, *charTexture;
 	TextureAtlas* atlas;
+	Render2D::CharacterSprite* charSprite;
+	Render2D::TopDownController* controller;
 	Render2D::Tilemap* tmap;
 	int stage;
 };

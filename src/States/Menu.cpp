@@ -128,7 +128,6 @@ void MenuState::update(GameStateManager* st)
 
 			}
 		}
-		app_Logger->log("SEL: " + std::to_string(selected));
 		break;
 	}
 

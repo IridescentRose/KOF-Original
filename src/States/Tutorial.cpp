@@ -51,9 +51,12 @@ void TutorialState::init()
 	Utilities::addActionKeyPair("walkLeft", PSP_CTRL_LEFT);
 	Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
 
-	controller->getAnimController()->setCharacterTickRateRelative(6);
+	controller->getAnimController()->setCharacterTickRateRelative(12);
 	controller->addPhysicsTileMap(tmap);
 	controller->setPosition({ 32 * 24, 32 * 27 });
+
+	hud = new HUD();
+	inv = new Inventory();
 }
 
 void TutorialState::cleanup()
@@ -79,6 +82,14 @@ void TutorialState::update(GameStateManager* st)
 
 void TutorialState::draw(GameStateManager* st)
 {
+	controller->draw();
 	tmap->drawMap();
 	controller->draw();
+
+	sceGumMatrixMode(GU_VIEW);
+	sceGumLoadIdentity();
+	sceGumMatrixMode(GU_MODEL);
+	hud->draw();
+
+	inv->drawHotbar();
 }

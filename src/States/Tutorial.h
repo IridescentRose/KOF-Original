@@ -6,6 +6,8 @@
 #include "Menu.h"
 #include <Graphics/2D/Tilemap.h>
 #include <Graphics/2D/TopDownController.h>
+#include "../Core/UI.h"
+#include "../Core//Inventory.h"
 
 using namespace Stardust::Graphics;
 
@@ -30,4 +32,6 @@ private:
 	Render2D::TopDownController* controller;
 	Render2D::Tilemap* tmap;
 	int stage;
+	HUD* hud;
+	Inventory* inv;
 };

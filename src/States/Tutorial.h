@@ -27,11 +27,12 @@ public:
 	void draw(GameStateManager* st);
 
 private:
-	Texture* texAtlas, *charTexture;
+	Texture* texAtlas, *charTexture, *tree;
 	TextureAtlas* atlas;
 	Render2D::CharacterSprite* charSprite;
 	Render2D::TopDownController* controller;
 	Render2D::Tilemap* tmap;
+	Render2D::Tilemap* treemap;
 	int stage;
 	HUD* hud;
 	Inventory* inv;

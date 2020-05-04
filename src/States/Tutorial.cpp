@@ -86,7 +86,6 @@ void TutorialState::init()
 	charSprite->addAnimEvent("walk", walk);
 	charSprite->setDefaultAnimEvent("idle");
 	charSprite->triggerAnimEvent("idle");
-	Utilities::app_Logger->log("HI");
 	charSprite->setFacing(Render2D::CHARACTER_FACING_DOWN);
 
 	controller = new Render2D::TopDownController(charSprite, 128.0f);
@@ -159,10 +158,9 @@ void TutorialState::draw(GameStateManager* st)
 	treemap->drawMap();
 	controller->draw();
 
-	sceGumMatrixMode(GU_VIEW);
-	sceGumLoadIdentity();
-	sceGumMatrixMode(GU_MODEL);
-	hud->draw();
+	g_RenderCore.Set2DMode();
 
+	//UI
+	hud->draw();
 	inv->drawHotbar();
 }

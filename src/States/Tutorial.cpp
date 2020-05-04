@@ -16,7 +16,7 @@ void TutorialState::init()
 	tmap->buildMap();
 
 
-	charSprite = new Render2D::CharacterSprite({ 64, 64 }, atlas, charTexture);
+	charSprite = new Render2D::CharacterSprite({ 48, 48 }, atlas, charTexture);
 
 	charSprite->position(240, 136);
 
@@ -53,7 +53,7 @@ void TutorialState::init()
 
 	controller->getAnimController()->setCharacterTickRateRelative(6);
 	controller->addPhysicsTileMap(tmap);
-	controller->setPosition({ 32 * 32, 32 * 32 });
+	controller->setPosition({ 32 * 24, 32 * 27 });
 }
 
 void TutorialState::cleanup()

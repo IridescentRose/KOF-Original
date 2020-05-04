@@ -55,6 +55,8 @@ void TutorialState::init()
 	controller->addPhysicsTileMap(tmap);
 	controller->setPosition({ 32 * 24, 32 * 27 });
 
+	hotbarPosition = 0;
+
 	hud = new HUD();
 	inv = new Inventory();
 }
@@ -77,6 +79,28 @@ void TutorialState::resume()
 
 void TutorialState::update(GameStateManager* st)
 {
+	if (Utilities::KeyPressed(PSP_CTRL_LTRIGGER)) {
+		hotbarPosition--;
+	}
+	if (Utilities::KeyPressed(PSP_CTRL_RTRIGGER)) {
+		hotbarPosition++;
+	}
+
+	if (hotbarPosition > 9) {
+		hotbarPosition = 0;
+	}
+
+	if (hotbarPosition < 0) {
+		hotbarPosition = 9;
+	}
+
+	inv->setHotbarSelect(hotbarPosition);
+
+	if (Utilities::KeyPressed(PSP_CTRL_START)) {
+		pauseHandler();
+	}
+
+
 	controller->update(0.016f);
 }
 

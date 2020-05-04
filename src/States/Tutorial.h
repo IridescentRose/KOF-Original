@@ -7,7 +7,8 @@
 #include <Graphics/2D/Tilemap.h>
 #include <Graphics/2D/TopDownController.h>
 #include "../Core/UI.h"
-#include "../Core//Inventory.h"
+#include "../Core/Inventory.h"
+#include "../Core/PauseHandler.h"
 
 using namespace Stardust::Graphics;
 
@@ -34,4 +35,5 @@ private:
 	int stage;
 	HUD* hud;
 	Inventory* inv;
+	int hotbarPosition;
 };

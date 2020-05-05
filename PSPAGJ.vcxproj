@@ -96,7 +96,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Core\Dialogue.cpp" />
     <ClCompile Include="src\Core\Inventory.cpp" />
+    <ClCompile Include="src\Core\NPCTutorial\NumptyTutorial.cpp" />
     <ClCompile Include="src\Core\PauseHandler.cpp" />
     <ClCompile Include="src\Core\UI.cpp" />
     <ClCompile Include="src\GameDialog.cpp" />
@@ -108,8 +110,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Core\Dialogue.h" />
     <ClInclude Include="src\Core\Inventory.h" />
     <ClInclude Include="src\Core\NPC.h" />
+    <ClInclude Include="src\Core\NPCTutorial\NumptyTutorial.h" />
     <ClInclude Include="src\Core\PauseHandler.h" />
     <ClInclude Include="src\Core\UI.h" />
     <ClInclude Include="src\GameDialog.h" />

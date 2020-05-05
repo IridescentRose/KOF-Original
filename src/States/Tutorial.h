@@ -10,6 +10,7 @@
 #include "../Core/Inventory.h"
 #include "../Core/PauseHandler.h"
 #include "../Core/NPCTutorial/NumptyTutorial.h"
+#include "../Core/Dialogue.h"
 
 using namespace Stardust::Graphics;
 
@@ -38,5 +39,35 @@ private:
 	int stage;
 	HUD* hud;
 	Inventory* inv;
+	Dialogue* dialog;
+	DialogStack* dial;
+	bool prevEngage;
 	int hotbarPosition;
 };
+
+struct TutProgInfo {
+	bool talkToSettler;
+
+	bool talkFarmer;
+	bool talkMiner;
+	bool talkGuard;
+	bool talkLumber;
+
+	bool canCompleteFarmer;
+	bool canCompleteMiner;
+	bool canCompleteGuard;
+	bool canCompleteLumber;
+
+	bool completeFarmer;
+	bool completeMiner;
+	bool completeGuard;
+	bool completeLumber;
+
+	bool tutorialTypesTriggered;
+	bool tutorialFarmTriggered;
+	bool tutorialMineTriggered;
+	bool tutorialCombatTriggered;
+	bool tutorialLumberTriggered;
+};
+
+extern TutProgInfo progInfo;

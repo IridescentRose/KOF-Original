@@ -8,6 +8,7 @@ src/GameDialog.o \
 src/Core/UI.o \
 src/Core/Inventory.o \
 src/Core/PauseHandler.o \
+src/Core/Dialogue.o \
 src/Core/NPCTutorial/NumptyTutorial.o \
 src/Main.o 
 

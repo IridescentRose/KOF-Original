@@ -15,6 +15,10 @@ public:
 	void setText(std::string);
 	void reset();
 
+	bool isDone() {
+		return index == txt.size();
+	}
+
 	void animateStep();
 	void draw();
 

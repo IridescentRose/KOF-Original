@@ -5,6 +5,8 @@ using namespace Stardust;
 using namespace Stardust::Graphics;
 using namespace Stardust::Graphics::Render2D;
 
+#include "Dialogue.h"
+
 #include <Graphics/2D/CharacterSprite.h>
 #include <Graphics/2D/TopDownController.h>
 
@@ -19,6 +21,11 @@ public:
 	virtual void draw() = 0;
 	virtual void update() = 0;
 	virtual void handleAction(char action) = 0;
+	virtual Dialog* getDialog() = 0;
+
+	inline glm::vec2 getPosition() {
+		return position;
+	}
 
 protected:
 	glm::vec2 position;

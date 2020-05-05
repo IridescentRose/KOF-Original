@@ -111,11 +111,27 @@ void TutorialState::init()
 	
 	npcs.push_back(new NumptyTutorial({ 32 * 24, 32 * 37 }, 3, tmap, treemap));
 	npcs.push_back(new NumptyTutorial({ 32 * 41, 32 * 27 }, 3, tmap, treemap));
-	npcs.push_back(new NumptyTutorial({ 32 * 30, 32 * 30 }, 3, tmap, treemap, "./assets/game/NPC/settler.png"));
-	npcs.push_back(new NumptyTutorial({ 32 * 52, 32 * 27 }, 3, tmap, treemap, "./assets/game/NPC/guard.png"));
-	npcs.push_back(new NumptyTutorial({ 32 * 8, 32 * 18 }, 3, tmap, treemap, "./assets/game/NPC/farmer.png"));
-	npcs.push_back(new NumptyTutorial({ 32 * 8, 32 * 54 }, 3, tmap, treemap, "./assets/game/NPC/miner.png"));
-	npcs.push_back(new NumptyTutorial({ 32 * 57, 32 * 54 }, 3, tmap, treemap, "./assets/game/NPC/lumberjack.png"));
+	npcs.push_back(new NumptyTutorial({ 32 * 30, 32 * 30 }, 3, tmap, treemap, "./assets/game/NPC/settler.png", "settler"));
+	npcs.push_back(new NumptyTutorial({ 32 * 52, 32 * 27 }, 3, tmap, treemap, "./assets/game/NPC/guard.png", "guard"));
+	npcs.push_back(new NumptyTutorial({ 32 * 8, 32 * 18 }, 3, tmap, treemap, "./assets/game/NPC/farmer.png", "farmer"));
+	npcs.push_back(new NumptyTutorial({ 32 * 8, 32 * 54 }, 3, tmap, treemap, "./assets/game/NPC/miner.png", "miner"));
+	npcs.push_back(new NumptyTutorial({ 32 * 57, 32 * 54 }, 3, tmap, treemap, "./assets/game/NPC/lumberjack.png", "lumberjack"));
+
+	dialog = new Dialogue();
+	Dialog* d2 = new Dialog(); 
+	d2->text = "Tutorial: Settlers wear white clothing!\nGo find the settler and press X to interact!";
+	d2->interactionType = INTERACTION_TYPE_NONE;
+
+	Dialog* d = new Dialog(); 
+	d->text = "You: Today's the day. The day I finally can begin to set out\non my journey. I've waited for years for the settler to\nreturn.He promised we could start a new village. A place\nwhere I can begin my own life, my own land.\nIt's been a long time. I should go see him...";
+	d->interactionType = INTERACTION_TYPE_NONE;
+	
+
+	dial = new DialogStack(dialog);
+	dial->addDialog(d);
+	dial->addDialog(d2);
+
+	prevEngage = false;
 }
 
 void TutorialState::cleanup()
@@ -136,22 +152,98 @@ void TutorialState::resume()
 
 void TutorialState::update(GameStateManager* st)
 {
-	if (Utilities::KeyPressed(PSP_CTRL_LTRIGGER)) {
-		hotbarPosition--;
-	}
-	if (Utilities::KeyPressed(PSP_CTRL_RTRIGGER)) {
-		hotbarPosition++;
+	if (!dialog->isEngaged()) {
+		if (Utilities::KeyPressed(PSP_CTRL_LTRIGGER)) {
+			hotbarPosition--;
+		}
+		if (Utilities::KeyPressed(PSP_CTRL_RTRIGGER)) {
+			hotbarPosition++;
+		}
+
+		if (hotbarPosition > 9) {
+			hotbarPosition = 0;
+		}
+
+		if (hotbarPosition < 0) {
+			hotbarPosition = 9;
+		}
+
+		inv->setHotbarSelect(hotbarPosition);
+
+		if (Utilities::KeyPressed(PSP_CTRL_CROSS)) {
+			for (auto npc : npcs) {
+				glm::vec2 pos = npc->getPosition();
+				glm::vec2 playerPos = controller->getCharacterSprite()->getPosition();
+
+				if ( ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16*16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16)) {
+					//INTERACT
+					dial->addDialog(npc->getDialog());
+				}
+
+			}
+		}
 	}
 
-	if (hotbarPosition > 9) {
-		hotbarPosition = 0;
+	if (progInfo.talkToSettler) {
+		if (!progInfo.tutorialTypesTriggered) {
+			progInfo.tutorialTypesTriggered = true;
+			Dialog* d = new Dialog();
+			d->interactionType = INTERACTION_TYPE_NONE;
+			d->text = "Tutorial: Each class of villager is a different color! \nFarmers are orange. Miners are grey. Guards are blue.\nLumberjacks are dark green. There are many more to meet!";
+			dial->addDialog(d);
+		}
+	}
+	if (progInfo.talkFarmer) {
+		if (!progInfo.tutorialFarmTriggered) {
+			progInfo.tutorialFarmTriggered = true;
+			Dialog* d = new Dialog();
+			d->interactionType = INTERACTION_TYPE_NONE;
+			d->text = "Tutorial: Go to the wheat farms and equip your hoe.\nPress X to harvest!\nFully golden wheat will drop drop seeds and wheat!\nWheat can be made into bread for food.\nWe'll plant some later!";
+			dial->addDialog(d);
+		}
+	}
+	if (progInfo.talkGuard) {
+		if (!progInfo.tutorialCombatTriggered) {
+			progInfo.tutorialCombatTriggered = true;
+			Dialog* d = new Dialog();
+			d->interactionType = INTERACTION_TYPE_NONE;
+			d->text = "Tutorial: Go find the bandit and take him down!\nWith sword equipped, hitting X will swing your sword!";
+			dial->addDialog(d);
+		}
+	}
+	if (progInfo.talkMiner) {
+		if (!progInfo.tutorialMineTriggered) {
+			progInfo.tutorialMineTriggered = true;
+			Dialog* d = new Dialog();
+			d->interactionType = INTERACTION_TYPE_NONE;
+			d->text = "Tutorial: Go to the quarry and equip your pickaxe!\nHitting X will break the stone! You'll need a few hits!";
+			dial->addDialog(d);
+		}
+	}
+	if (progInfo.talkLumber) {
+		if (!progInfo.tutorialLumberTriggered) {
+			progInfo.tutorialLumberTriggered = true;
+			Dialog* d = new Dialog();
+			d->interactionType = INTERACTION_TYPE_NONE;
+			d->text = "Tutorial: Equip your axe and go to the tree farm!\nHit X to cut the trees! You'll need a few hits!";
+			dial->addDialog(d);
+		}
 	}
 
-	if (hotbarPosition < 0) {
-		hotbarPosition = 9;
+	if (dialog->isEngaged() != prevEngage) {
+		if (dialog->isEngaged()) {
+			//Kill handlers
+			Utilities::clearActionKeyPairs();
+		}
+		else {
+			//Revive handlers
+			Utilities::addActionKeyPair("walkUp", PSP_CTRL_UP);
+			Utilities::addActionKeyPair("walkDown", PSP_CTRL_DOWN);
+			Utilities::addActionKeyPair("walkLeft", PSP_CTRL_LEFT);
+			Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
+		}
 	}
-
-	inv->setHotbarSelect(hotbarPosition);
+	prevEngage = dialog->isEngaged();
 
 	if (Utilities::KeyPressed(PSP_CTRL_START)) {
 		pauseHandler();
@@ -163,6 +255,8 @@ void TutorialState::update(GameStateManager* st)
 	}
 	
 	controller->update(0.016f);
+	dialog->update();
+	dial->update();
 }
 
 void TutorialState::draw(GameStateManager* st)
@@ -170,11 +264,12 @@ void TutorialState::draw(GameStateManager* st)
 	controller->draw();
 	tmap->drawMap();
 	treemap->drawMap();
-	controller->draw();
 
 	for (auto npc : npcs) {
 		npc->draw();
 	}
+
+	controller->draw();
 
 
 	g_RenderCore.Set2DMode();
@@ -182,4 +277,7 @@ void TutorialState::draw(GameStateManager* st)
 	//UI
 	hud->draw();
 	inv->drawHotbar();
+	dialog->draw();
 }
+
+TutProgInfo progInfo = { false, false, false, false, false , false, false, false, false , false, false, false, false, false , false, false, false, false};

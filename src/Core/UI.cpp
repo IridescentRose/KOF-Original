@@ -31,6 +31,13 @@ HUD::HUD()
 	hungerE->Scale(2.0f, 2.0f);
 	hungerF->Scale(2.0f, 2.0f);
 	hungerH->Scale(2.0f, 2.0f);
+
+	goldSprite = new Sprite(util, 24, 8, 8, 8, true);
+	goldSprite->Scale(2.0f, 2.0f);
+	gold = 0;
+
+	goldCount = new UIText({480 - 24, 60}, std::to_string(gold));
+	goldCount->setOptions({ 0.5f, 0xFFFFFFFF, INTRAFONT_ALIGN_RIGHT });
 }
 
 void HUD::setHealth(int i)
@@ -51,6 +58,12 @@ void HUD::setHunger(int i)
 void HUD::setEnergy(int i)
 {
 	energy = i;
+}
+
+void HUD::setGold(int i)
+{
+	gold = i;
+	goldCount->setContent(std::to_string(gold));
 }
 
 void HUD::draw()
@@ -98,4 +111,9 @@ void HUD::draw()
 		energyF->SetPosition((480 - 168) + 16 * (i % 10), 24);
 		energyF->Draw();
 	}
+
+	goldSprite->SetPosition(480 - 24, 48);
+	goldSprite->Draw();
+
+	goldCount->draw();
 }

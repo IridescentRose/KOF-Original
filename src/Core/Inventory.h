@@ -52,3 +52,5 @@ private:
 
 	int selPos;
 };
+
+extern Inventory* g_Inventory;

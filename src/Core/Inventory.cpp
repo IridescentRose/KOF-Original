@@ -221,3 +221,5 @@ void Inventory::draw()
 		arrow->Draw();
 	}
 }
+
+Inventory* g_Inventory;

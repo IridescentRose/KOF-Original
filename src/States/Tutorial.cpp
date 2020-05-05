@@ -105,7 +105,7 @@ void TutorialState::init()
 	hotbarPosition = 0;
 
 	hud = new HUD();
-	inv = new Inventory();
+	g_Inventory = new Inventory();
 
 	npcs.clear();
 	
@@ -154,8 +154,8 @@ void TutorialState::resume()
 void TutorialState::update(GameStateManager* st)
 {
 
-	inv->update();
-	if (!dialog->isEngaged() && !inv->isEngaged()) {
+	g_Inventory->update();
+	if (!dialog->isEngaged() && !g_Inventory->isEngaged()) {
 		if (Utilities::KeyPressed(PSP_CTRL_LTRIGGER)) {
 			hotbarPosition--;
 		}
@@ -172,10 +172,10 @@ void TutorialState::update(GameStateManager* st)
 		}
 
 		if (Utilities::KeyPressed(PSP_CTRL_TRIANGLE)) {
-			inv->show();
+			g_Inventory->show();
 		}
 
-		inv->setHotbarSelect(hotbarPosition);
+		g_Inventory->setHotbarSelect(hotbarPosition);
 
 		if (Utilities::KeyPressed(PSP_CTRL_CROSS)) {
 			for (auto npc : npcs) {
@@ -237,8 +237,8 @@ void TutorialState::update(GameStateManager* st)
 		}
 	}
 
-	if ((dialog->isEngaged() || inv->isEngaged()) != prevEngage) {
-		if (dialog->isEngaged() || inv->isEngaged()) {
+	if ((dialog->isEngaged() || g_Inventory->isEngaged()) != prevEngage) {
+		if (dialog->isEngaged() || g_Inventory->isEngaged()) {
 			//Kill handlers
 			Utilities::clearActionKeyPairs();
 		}
@@ -250,7 +250,7 @@ void TutorialState::update(GameStateManager* st)
 			Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
 		}
 	}
-	prevEngage = dialog->isEngaged() || inv->isEngaged();
+	prevEngage = dialog->isEngaged() || g_Inventory->isEngaged();
 
 	if (Utilities::KeyPressed(PSP_CTRL_START)) {
 		pauseHandler();
@@ -283,9 +283,9 @@ void TutorialState::draw(GameStateManager* st)
 
 	//UI
 	hud->draw();
-	inv->drawHotbar();
+	g_Inventory->drawHotbar();
 	dialog->draw();
-	inv->draw();
+	g_Inventory->draw();
 }
 
 TutProgInfo progInfo = { false, false, false, false, false , false, false, false, false , false, false, false, false, false , false, false, false, false};

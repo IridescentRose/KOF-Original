@@ -165,6 +165,12 @@ void Inventory::update()
 					slots[position.y * 10 + position.x] = held;
 					held = { Items::NONE, 0 };
 				}
+				else if (slots[position.y * 10 + position.x].item.ID == held.item.ID) {
+					if (!held.item.special) {
+						slots[position.y * 10 + position.x].quantity += held.quantity;
+						held = { Items::NONE, 0 };
+					}
+				}
 			}
 		}
 

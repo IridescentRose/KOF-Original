@@ -27,7 +27,7 @@ void MenuState::init()
 	crdt = new UI::UIText({ 240, 136 }, "Credits");
 	exit = new UI::UIText({ 240, 136 }, "Exit");
 
-	instructions = new UI::UIText({ 240, 0 }, "Instructions:\nWelcome to your new adventure.\nYou live in the city of Easthaven.\nYour heart aches for adevnture\nBut you must acquire the funds\nto start your journey in the wild.\nEasthaven is a strange community.\nWhere the living and the undead\nWill rest in harmony.\n\nDPAD - Move, X - Interact\n O - Exit, TRI - Inventory\nR/L - Hotswap, START - Menu\n SQUARE - Toggle Build\n\nPress X to return.");
+	instructions = new UI::UIText({ 240, 0 }, "Instructions:\nWelcome to your new adventure.\nYou live in the city of Easthaven.\nYour heart aches for adventure\nBut you must acquire the funds\nto start your journey in the wild.\nEasthaven is a strange community.\nWhere the living and the undead\nWill rest in harmony.\n\nDPAD - Move, X - Interact\n O - Exit, TRI - Inventory\nR/L - Hotswap, START - Menu\n SQUARE - Toggle Build\n\nPress X to return.");
 	credits = new UI::UIText({ 240, 40 }, "Game Made by Nathan Bourgeois\n\nTextures: Me & Others\nOther Assets from sources\n(see LICENSES.txt)\n\nFor: The PSP Homebrew Community\n\n\n\n\nPress X to return.");
 
 	start = new UI::UIButton({ 240, 136 }, { 180, 32 }, unsel, sel, strt);

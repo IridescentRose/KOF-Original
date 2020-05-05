@@ -106,6 +106,16 @@ void TutorialState::init()
 
 	hud = new HUD();
 	inv = new Inventory();
+
+	npcs.clear();
+	
+	npcs.push_back(new NumptyTutorial({ 32 * 24, 32 * 37 }, 3, tmap, treemap));
+	npcs.push_back(new NumptyTutorial({ 32 * 41, 32 * 27 }, 3, tmap, treemap));
+	npcs.push_back(new NumptyTutorial({ 32 * 30, 32 * 30 }, 3, tmap, treemap, "./assets/game/NPC/settler.png"));
+	npcs.push_back(new NumptyTutorial({ 32 * 52, 32 * 27 }, 3, tmap, treemap, "./assets/game/NPC/guard.png"));
+	npcs.push_back(new NumptyTutorial({ 32 * 8, 32 * 18 }, 3, tmap, treemap, "./assets/game/NPC/farmer.png"));
+	npcs.push_back(new NumptyTutorial({ 32 * 8, 32 * 54 }, 3, tmap, treemap, "./assets/game/NPC/miner.png"));
+	npcs.push_back(new NumptyTutorial({ 32 * 57, 32 * 54 }, 3, tmap, treemap, "./assets/game/NPC/lumberjack.png"));
 }
 
 void TutorialState::cleanup()
@@ -147,7 +157,11 @@ void TutorialState::update(GameStateManager* st)
 		pauseHandler();
 	}
 
-
+	for (auto npc : npcs) {
+		npc->simpleAITick();
+		npc->update();
+	}
+	
 	controller->update(0.016f);
 }
 
@@ -157,6 +171,11 @@ void TutorialState::draw(GameStateManager* st)
 	tmap->drawMap();
 	treemap->drawMap();
 	controller->draw();
+
+	for (auto npc : npcs) {
+		npc->draw();
+	}
+
 
 	g_RenderCore.Set2DMode();
 

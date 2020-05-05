@@ -9,6 +9,7 @@
 #include "../Core/UI.h"
 #include "../Core/Inventory.h"
 #include "../Core/PauseHandler.h"
+#include "../Core/NPCTutorial/NumptyTutorial.h"
 
 using namespace Stardust::Graphics;
 
@@ -27,6 +28,7 @@ public:
 	void draw(GameStateManager* st);
 
 private:
+	std::vector<NPC*> npcs;
 	Texture* texAtlas, *charTexture, *tree;
 	TextureAtlas* atlas;
 	Render2D::CharacterSprite* charSprite;

@@ -130,7 +130,8 @@ Dialog* NumptyTutorial::getDialog()
 			d->text = "You still need more tools!";
 		}
 		else {
-			d->text = "THIS IS UNIMPLEMENTED";
+			d->text = "Well... before we go... I need you to pay me 1000 gold.\n Why? I want to make sure this journey is worth my while!\nWhat's this? You don't have enough? Well I guess... I need\nalternative payment. 4 hearts and it's a deal!\nReady or not, here I come!";
+			progInfo.tutorialCompleted = true;
 		}
 	}
 	else if (tag == "farmer" && progInfo.talkToSettler) {

@@ -237,7 +237,14 @@ void TutorialState::update(GameStateManager* st)
 		}
 	}
 
+	dialog->update();
+	dial->update();
+
 	if ((dialog->isEngaged() || g_Inventory->isEngaged()) != prevEngage) {
+		if (progInfo.tutorialCompleted) {
+			//END OF TUTORIAL!
+		}
+
 		if (dialog->isEngaged() || g_Inventory->isEngaged()) {
 			//Kill handlers
 			Utilities::clearActionKeyPairs();
@@ -262,8 +269,6 @@ void TutorialState::update(GameStateManager* st)
 	}
 	
 	controller->update(0.016f);
-	dialog->update();
-	dial->update();
 }
 
 void TutorialState::draw(GameStateManager* st)

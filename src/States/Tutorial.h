@@ -68,6 +68,8 @@ struct TutProgInfo {
 	bool tutorialMineTriggered;
 	bool tutorialCombatTriggered;
 	bool tutorialLumberTriggered;
+
+	bool tutorialCompleted;
 };
 
 extern TutProgInfo progInfo;

@@ -131,6 +131,7 @@ void TutorialState::init()
 	dial->addDialog(d);
 	dial->addDialog(d2);
 
+	
 	prevEngage = false;
 }
 
@@ -152,7 +153,9 @@ void TutorialState::resume()
 
 void TutorialState::update(GameStateManager* st)
 {
-	if (!dialog->isEngaged()) {
+
+	inv->update();
+	if (!dialog->isEngaged() && !inv->isEngaged()) {
 		if (Utilities::KeyPressed(PSP_CTRL_LTRIGGER)) {
 			hotbarPosition--;
 		}
@@ -166,6 +169,10 @@ void TutorialState::update(GameStateManager* st)
 
 		if (hotbarPosition < 0) {
 			hotbarPosition = 9;
+		}
+
+		if (Utilities::KeyPressed(PSP_CTRL_TRIANGLE)) {
+			inv->show();
 		}
 
 		inv->setHotbarSelect(hotbarPosition);
@@ -230,8 +237,8 @@ void TutorialState::update(GameStateManager* st)
 		}
 	}
 
-	if (dialog->isEngaged() != prevEngage) {
-		if (dialog->isEngaged()) {
+	if ((dialog->isEngaged() || inv->isEngaged()) != prevEngage) {
+		if (dialog->isEngaged() || inv->isEngaged()) {
 			//Kill handlers
 			Utilities::clearActionKeyPairs();
 		}
@@ -243,7 +250,7 @@ void TutorialState::update(GameStateManager* st)
 			Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
 		}
 	}
-	prevEngage = dialog->isEngaged();
+	prevEngage = dialog->isEngaged() || inv->isEngaged();
 
 	if (Utilities::KeyPressed(PSP_CTRL_START)) {
 		pauseHandler();
@@ -278,6 +285,7 @@ void TutorialState::draw(GameStateManager* st)
 	hud->draw();
 	inv->drawHotbar();
 	dialog->draw();
+	inv->draw();
 }
 
 TutProgInfo progInfo = { false, false, false, false, false , false, false, false, false , false, false, false, false, false , false, false, false, false};

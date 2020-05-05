@@ -32,6 +32,7 @@ NumptyTutorial::NumptyTutorial(glm::vec2 startPosition, char r, Tilemap* tmap1, 
 	characterModel->addAnimEvent("walk", walk);
 	characterModel->setDefaultAnimEvent("idle");
 	characterModel->triggerAnimEvent("idle");
+	characterModel->triggerAnimEvent("walk");
 	characterModel->setFacing(Render2D::CHARACTER_FACING_DOWN);
 
 	controller = new Render2D::TopDownController(characterModel, 128.0f, false);

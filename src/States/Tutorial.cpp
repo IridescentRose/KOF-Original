@@ -131,8 +131,15 @@ void TutorialState::init()
 	dial->addDialog(d);
 	dial->addDialog(d2);
 
-	
+	txt = new CombatText();
 	prevEngage = false;
+
+	CombatTextDetails* dt = new CombatTextDetails();
+	dt->text = "14";
+	dt->color = 0xFF0000FF;
+	dt->ticks = 20; 
+	dt->pos = { 240, 136 };
+	txt->addText(dt);
 }
 
 void TutorialState::cleanup()
@@ -267,7 +274,7 @@ void TutorialState::update(GameStateManager* st)
 		npc->simpleAITick();
 		npc->update();
 	}
-	
+	txt->update();
 	controller->update(0.016f);
 }
 
@@ -285,6 +292,8 @@ void TutorialState::draw(GameStateManager* st)
 
 
 	g_RenderCore.Set2DMode();
+
+	txt->draw();
 
 	//UI
 	hud->draw();

@@ -11,6 +11,7 @@
 #include "../Core/PauseHandler.h"
 #include "../Core/NPCTutorial/NumptyTutorial.h"
 #include "../Core/Dialogue.h"
+#include "../Core/Combat/CombatText.h"
 
 using namespace Stardust::Graphics;
 
@@ -43,6 +44,7 @@ private:
 	DialogStack* dial;
 	bool prevEngage;
 	int hotbarPosition;
+	CombatText* txt;
 };
 
 struct TutProgInfo {

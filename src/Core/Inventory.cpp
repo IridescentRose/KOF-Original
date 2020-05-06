@@ -26,10 +26,6 @@ Inventory::Inventory()
 	}
 	sprites = new ItemSprites();
 
-	slots[0] = { Items::IRON_SWORD, 1 };
-	slots[1] = { Items::BREAD, 3 };
-	slots[11] = { Items::BREAD, 3 };
-
 	txt = new UIText({0, 0}, "");
 	txt->setOptions({ 0.5f, 0xFFFFFFFF, INTRAFONT_ALIGN_RIGHT });
 

@@ -36,8 +36,22 @@ HUD::HUD()
 	goldSprite->Scale(2.0f, 2.0f);
 	gold = 0;
 
+	hitU = new Sprite(util, 0, 16, 8, 8, true);
+	hitU->Scale(4.0f, 4.0f);
+	hitU->SetPosition(240 - 17, 136 - 42);
+	hitR = new Sprite(util, 8, 16, 8, 8, true);
+	hitR->Scale(4.0f, 4.0f);
+	hitR->SetPosition(240 + 8, 136 - 10);
+	hitL = new Sprite(util, 16, 16, 8, 8, true);
+	hitL->Scale(4.0f, 4.0f);
+	hitL->SetPosition(240 - 40, 136 - 10);
+	hitD = new Sprite(util, 24, 16, 8, 8, true);
+	hitD->Scale(4.0f, 4.0f);
+	hitD->SetPosition(240 - 17, 136 + 10);
+
 	goldCount = new UIText({480 - 24, 60}, std::to_string(gold));
 	goldCount->setOptions({ 0.5f, 0xFFFFFFFF, INTRAFONT_ALIGN_RIGHT });
+	tick = -1;
 }
 
 void HUD::setHealth(int i)
@@ -66,8 +80,40 @@ void HUD::setGold(int i)
 	goldCount->setContent(std::to_string(gold));
 }
 
+void HUD::triggerHit(char dir)
+{
+	d = dir;
+	tick = 6;
+}
+
+void HUD::update()
+{
+	tick--;
+}
+
 void HUD::draw()
 {
+	if (tick > 0) {
+		switch (d) {
+		case CHARACTER_FACING_DOWN: {
+			hitD->Draw();
+			break;
+		}
+		case CHARACTER_FACING_UP: {
+			hitU->Draw();
+			break;
+		}
+		case CHARACTER_FACING_LEFT: {
+			hitL->Draw();
+			break;
+		}
+		case CHARACTER_FACING_RIGHT: {
+			hitR->Draw();
+			break;
+		}
+		}
+	}
+
 	for (int i = 0; i < maxHealth / 2; i++) {
 		heartE->SetPosition(8 + 16 * (i % 10), 8 + 16 * (i / 10));
 		heartE->Draw();

@@ -195,6 +195,8 @@ void TutorialState::update(GameStateManager* st)
 				}
 
 			}
+
+			hud->triggerHit(controller->getCharacterSprite()->getFacing());
 		}
 	}
 
@@ -276,6 +278,7 @@ void TutorialState::update(GameStateManager* st)
 	}
 	txt->update();
 	controller->update(0.016f);
+	hud->update();
 }
 
 void TutorialState::draw(GameStateManager* st)

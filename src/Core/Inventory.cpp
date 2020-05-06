@@ -76,19 +76,20 @@ void Inventory::hide()
 
 bool Inventory::tryAddItem(Item itm)
 {
-	int idx = findItem(itm);
-	if (idx > 0 && !itm.special) {
-		slots[idx].quantity++;
-		return true;
-	}
-	else {
-		int idx = findItem(Items::NONE);
-		if (idx > 0) {
-			slots[idx].item = itm;
-			slots[idx].quantity = 1;
+	int attempt = 0;
+	do {
+		if (slots[attempt].item.ID == Items::NONE.ID) {
+			slots[attempt].item = itm;
+			slots[attempt].quantity = 1;
 			return true;
 		}
-	}
+		else if (slots[attempt].item.ID == itm.ID) {
+			slots[attempt].quantity++;
+			return true;
+		}
+		attempt++;
+
+	} while (attempt < 40);
 	return false;
 }
 

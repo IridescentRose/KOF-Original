@@ -138,6 +138,8 @@ Dialog* NumptyTutorial::getDialog()
 		if (!progInfo.talkFarmer) {
 			progInfo.talkFarmer = true;
 			d->text = "Morning to ya' whippersnapper! How have you been?\nSo why have you come to me today? I see... you need tools...\nI have a spare hoe fer you, and you can keep it if you\ngo harvest some wheat from my farm and bring it back!\nI'll even give ya' something worthwhile!";
+			
+			g_Inventory->tryAddItem(Items::IRON_HOE);
 		}
 		else if (progInfo.canCompleteFarmer) {
 			progInfo.completeFarmer = true;
@@ -154,6 +156,7 @@ Dialog* NumptyTutorial::getDialog()
 		if (!progInfo.talkGuard) {
 			progInfo.talkGuard = true;
 			d->text = "Good morning sir! What brings you here? I see...\nYou need a weapon to defend yourself! Let's see!\nI spotted some bandits to the north... I got one, but the\nother escaped! Take this sword and take him on.\nIf you succeed, keep it as a gift.";
+			g_Inventory->tryAddItem(Items::IRON_SWORD);
 		}
 		else if (progInfo.canCompleteGuard) {
 			progInfo.completeGuard = true;
@@ -170,6 +173,7 @@ Dialog* NumptyTutorial::getDialog()
 		if (!progInfo.talkMiner) {
 			progInfo.talkMiner = true;
 			d->text = "Hello. What brings you here? Ah...\nI can lend you a pickaxe, but you're going to need to get\nsome stone to help me replace it. I'll even pay you!";
+			g_Inventory->tryAddItem(Items::IRON_PICKAXE);
 		}
 		else if (progInfo.canCompleteMiner) {
 			progInfo.canCompleteMiner = true;
@@ -186,6 +190,7 @@ Dialog* NumptyTutorial::getDialog()
 		if (!progInfo.talkLumber) {
 			progInfo.talkLumber = true;
 			d->text = "Mornin' to you, son. How can I help you? Hm...\nI can give you an old axe, but you'll need to go get\nme a few logs. I'll get you something special!";
+			g_Inventory->tryAddItem(Items::IRON_AXE);
 		}
 		else if (progInfo.canCompleteLumber) {
 			progInfo.canCompleteLumber = true;

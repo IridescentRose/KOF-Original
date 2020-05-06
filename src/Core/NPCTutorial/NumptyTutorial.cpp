@@ -139,6 +139,7 @@ Dialog* NumptyTutorial::getDialog()
 		else {
 			d->text = "Well... before we go... I need you to pay me 1000 gold.\n Why? I want to make sure this journey is worth my while!\nWhat's this? You don't have enough? Well I guess... I need\nalternative payment. 4 hearts and it's a deal!\nReady or not, here I come!";
 			progInfo.tutorialCompleted = true;
+			player.health -= 8;
 		}
 	}
 	else if (tag == "farmer" && progInfo.talkToSettler) {
@@ -192,7 +193,7 @@ Dialog* NumptyTutorial::getDialog()
 			g_Inventory->tryAddItem(Items::IRON_PICKAXE);
 		}
 		else if (progInfo.canCompleteMiner && !progInfo.completeMiner) {
-			progInfo.canCompleteMiner = true;
+			progInfo.completeMiner = true;
 			d->text = "Ah! This is great. Just one more thing...\n*CHOMP* Delicious!";
 			player.gold += 100;
 			player.health -= 3;

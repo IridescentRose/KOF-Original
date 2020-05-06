@@ -104,7 +104,9 @@ void TutorialState::init()
 	controller->setPosition({ 32 * 24, 32 * 27 });
 
 	hotbarPosition = 0;
-
+	clip = new Audio::AudioClip("./assets/game/tutorial.bgm", true);
+	clip->SetLoop(true);
+	clip->Play(7);
 	hud = new HUD();
 	g_Inventory = new Inventory();
 
@@ -310,14 +312,9 @@ void TutorialState::update(GameStateManager* st)
 					drp2->itm = Items::SEEDS;
 					drp2->quantity = 1 + rand() % 3;
 
-					if (tmap->getTile(x + y * 64)->texIndex <= 21) {
-						drp2->quantity = 1;
-						drops->addDrop(drp2);
-					}
-					else {
-						drops->addDrop(drp);
-						drops->addDrop(drp2);
-					}
+					drops->addDrop(drp);
+					drops->addDrop(drp2);
+					
 
 					progInfo.canCompleteFarmer = true;
 
@@ -460,9 +457,7 @@ void TutorialState::update(GameStateManager* st)
 	dial->update();
 
 	if ((dialog->isEngaged() || g_Inventory->isEngaged()) != prevEngage) {
-		if (progInfo.tutorialCompleted) {
-			//END OF TUTORIAL!
-		}
+		
 
 		if (dialog->isEngaged() || g_Inventory->isEngaged()) {
 			//Kill handlers
@@ -480,6 +475,10 @@ void TutorialState::update(GameStateManager* st)
 	else {
 		if (removeEnergy) {
 			player.energy -= removeAmount;
+		}
+		if (progInfo.tutorialCompleted) {
+			//END OF TUTORIAL!
+			sceKernelExitGame();
 		}
 	}
 	prevEngage = dialog->isEngaged() || g_Inventory->isEngaged();

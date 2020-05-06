@@ -55,6 +55,7 @@ private:
 	CombatText* txt;
 	int removeAmount;
 	DropManager* drops;
+	Audio::AudioClip* clip;
 };
 
 extern PlayerInfo player;

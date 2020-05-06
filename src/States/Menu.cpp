@@ -40,8 +40,8 @@ void MenuState::init()
 	exits->setPosition({ 240, 220 });
 
 	mainTheme = new Audio::AudioClip("./assets/main/maintheme.bgm", true);
+	mainTheme->SetLoop(true);
 	mainTheme->Play(7);
-	
 
 	click = new Audio::AudioClip("./assets/main/click.wav");
 }

@@ -27,10 +27,14 @@ public:
 	bool tryAddItem(Item itm);
 	int findItem(Item itm);
 
+	inline Item getItem(int slot) {
+		return slots[slot].item;
+	}
 
 	bool isEngaged();
 
 	void update();
+	ItemSprites* sprites;
 	void draw();
 
 private:
@@ -38,7 +42,6 @@ private:
 	Sprite* hotbarSlot;
 	Sprite* hotbarSelector;
 	Sprite* arrow;
-	ItemSprites* sprites;
 	Sprite* inventory;
 	UIText* txt;
 

@@ -7,6 +7,7 @@ TutorialState::TutorialState()
 
 void TutorialState::init()
 {
+	srand(time(0));
 	texAtlas = TextureUtil::LoadPng("./assets/game/atlas.png");
 	charTexture = TextureUtil::LoadPng("./assets/game/mc.png");
 	atlas = new TextureAtlas(16);
@@ -142,9 +143,10 @@ void TutorialState::init()
 	txt->addText(dt);
 
 	player.energy = 10;
-	player.health = 0;
+	player.health = 20;
 	player.hunger = 20;
 	player.gold = 100;
+	drops = new DropManager();
 }
 
 void TutorialState::cleanup()
@@ -195,6 +197,12 @@ void TutorialState::update(GameStateManager* st)
 		player.hunger = 0;
 	}
 
+	if (player.energy <= 3) {
+		controller->speed = 64.0f;
+	}else{
+		controller->speed = 128.0f;
+	}
+
 	bool removeEnergy = false;
 
 	g_Inventory->update();
@@ -235,6 +243,98 @@ void TutorialState::update(GameStateManager* st)
 			if (player.energy >= 1) {
 				hud->triggerHit(controller->getCharacterSprite()->getFacing());
 				removeEnergy = true;
+				removeAmount = 1;
+
+				glm::vec2 pos = controller->getCharacterSprite()->getPosition();
+
+				switch (controller->getCharacterSprite()->getFacing()) {
+				case CHARACTER_FACING_DOWN: {
+					pos.y += 20;
+					break;
+				}
+				case CHARACTER_FACING_UP: {
+					pos.y -= 20;
+					break;
+				}
+				case CHARACTER_FACING_LEFT: {
+					pos.x -= 20;
+					break;
+				}
+				case CHARACTER_FACING_RIGHT: {
+					pos.x += 20;
+					break;
+				}
+				}
+
+				int x = ((int)pos.x) / 16;
+				int y = ((int)pos.y) / 16;
+
+				if (tmap->getTile(x + y * 64)->texIndex > 18 && tmap->getTile(x + y * 64)->texIndex <= 22 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
+					Tile* t = new Tile();
+					t->offset = { x * 32, y * 32 };
+					t->layer = 0;
+					t->rgba = 0xFFFFFFFF;
+					t->rotation = 0;
+					t->physics = false;
+					t->extent = { 32, 32 };
+					t->texIndex = 18;
+					tmap->updateTile(x + y * 64, t);
+					tmap->buildMap();
+
+					removeAmount = 5;
+					CombatTextDetails* dt = new CombatTextDetails();
+					dt->text = "10";
+					dt->color = 0xFF0000FF;
+					dt->ticks = 20;
+					dt->pos = { 240, 136 };
+					txt->addText(dt);
+
+					ItemDrop* drp = new ItemDrop();
+					drp->itm = Items::WHEAT;
+					drp->quantity = 1;
+					drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+
+					ItemDrop* drp2 = new ItemDrop();
+					drp2->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+					drp2->itm = Items::SEEDS;
+					drp2->quantity = 1 + rand() % 2;
+
+					progInfo.canCompleteFarmer = true;
+
+					drops->addDrop(drp);
+					drops->addDrop(drp2);
+				}
+
+				if (tmap->getTile(x + y * 64)->texIndex == 23 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_PICKAXE.ID && player.energy > 5) {
+					Tile* t = new Tile();
+					t->offset = { x * 32, y * 32 };
+					t->layer = 0;
+					t->rgba = 0xFFFFFFFF;
+					t->rotation = 0;
+					t->physics = false;
+					t->extent = { 32, 32 };
+					t->texIndex = 0;
+					tmap->updateTile(x + y * 64, t);
+					tmap->buildMap();
+
+					removeAmount = 5;
+					CombatTextDetails* dt = new CombatTextDetails();
+					dt->text = "10";
+					dt->color = 0xFF0000FF;
+					dt->ticks = 20;
+					dt->pos = { 240, 136 };
+					txt->addText(dt);
+
+					ItemDrop* drp = new ItemDrop();
+					drp->itm = Items::STONES;
+					drp->quantity = 1 + rand() % 4;
+					drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+
+					progInfo.canCompleteMiner = true;
+
+					drops->addDrop(drp);
+				}
+
 			}
 		}
 	}
@@ -308,7 +408,7 @@ void TutorialState::update(GameStateManager* st)
 	}
 	else {
 		if (removeEnergy) {
-			player.energy -= 1;
+			player.energy -= removeAmount;
 		}
 	}
 	prevEngage = dialog->isEngaged() || g_Inventory->isEngaged();
@@ -324,6 +424,7 @@ void TutorialState::update(GameStateManager* st)
 	txt->update();
 	controller->update(0.016f);
 	hud->update();
+	drops->update(controller->getCharacterSprite()->getPosition());
 }
 
 void TutorialState::draw(GameStateManager* st)
@@ -336,8 +437,9 @@ void TutorialState::draw(GameStateManager* st)
 		npc->draw();
 	}
 
+	drops->draw();
 	controller->draw();
-
+	
 
 	g_RenderCore.Set2DMode();
 
@@ -349,5 +451,5 @@ void TutorialState::draw(GameStateManager* st)
 	dialog->draw();
 	g_Inventory->draw();
 }
-
+PlayerInfo player;
 TutProgInfo progInfo = { false, false, false, false, false , false, false, false, false , false, false, false, false, false , false, false, false, false};

@@ -24,6 +24,6 @@ public:
 	void draw();
 
 private:
-	std::map<int, CombatTextDetails*> map;
+	CombatTextDetails* map;
 	UIText* txt;
 };

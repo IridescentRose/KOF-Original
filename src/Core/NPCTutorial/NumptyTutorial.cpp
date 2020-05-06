@@ -114,7 +114,7 @@ void NumptyTutorial::handleAction(char action)
 	}
 
 }
-
+#include "../../States/Tutorial.h"
 Dialog* NumptyTutorial::getDialog()
 {
 	Dialog* d = new Dialog();
@@ -144,6 +144,14 @@ Dialog* NumptyTutorial::getDialog()
 		else if (progInfo.canCompleteFarmer) {
 			progInfo.completeFarmer = true;
 			d->text = "Thanks whippersnapper! Now let's get down to business.\nTake some bread here, and gold... and come here...\n*CHOMP*\nThank you fer the donation!";
+
+			g_Inventory->tryAddItem(Items::BREAD);
+			g_Inventory->tryAddItem(Items::BREAD);
+			g_Inventory->tryAddItem(Items::BREAD);
+			g_Inventory->tryAddItem(Items::BREAD);
+			g_Inventory->tryAddItem(Items::BREAD);
+			player.gold += 150;
+			player.health -= 5;
 		}
 		else if (!progInfo.canCompleteFarmer) {
 			d->text = "Get on with it, whippersnapper!";
@@ -161,6 +169,7 @@ Dialog* NumptyTutorial::getDialog()
 		else if (progInfo.canCompleteGuard) {
 			progInfo.completeGuard = true;
 			d->text = "Thank you! Here's the bounty!\n";
+			player.gold += 250;
 		}
 		else if (!progInfo.canCompleteGuard) {
 			d->text = "Have you found him yet? People are in danger!";
@@ -178,6 +187,8 @@ Dialog* NumptyTutorial::getDialog()
 		else if (progInfo.canCompleteMiner) {
 			progInfo.canCompleteMiner = true;
 			d->text = "Ah! This is great. Just one more thing...\n*CHOMP* Delicious!";
+			player.gold += 100;
+			player.health -= 3;
 		}
 		else if (!progInfo.canCompleteMiner) {
 			d->text = "These stones won't mine themselves!";
@@ -195,6 +206,7 @@ Dialog* NumptyTutorial::getDialog()
 		else if (progInfo.canCompleteLumber) {
 			progInfo.canCompleteLumber = true;
 			d->text = "Hello, hello! Thank you for the wood!\nAs promised, take this apple!";
+			g_Inventory->tryAddItem(Items::APPLE);
 		}
 		else if (!progInfo.canCompleteLumber) {
 			d->text = "I still see those trees! What are you doing?";

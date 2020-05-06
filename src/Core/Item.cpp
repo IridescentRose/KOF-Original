@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "Inventory.h"
 
 Item Items::NONE = { -1, false, false, 0 };
 Item Items::IRON_SWORD = { 0, false, true, ITEM_SPECIAL_SWORD };
@@ -21,11 +22,12 @@ Item Items::LOGS = { 16, false, false, 0 };
 Item Items::WOOD = { 17, false, false, 0 };
 Item Items::COBBLESTONE = { 18, false, false, 0 };
 Item Items::ACORN = { 19, false, false, 0 };
+Item Items::SEEDS = { 20, false, false, 0 };
 
 ItemSprites::ItemSprites()
 {
 	items = TextureUtil::LoadPng("./assets/game/items.png");
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 21; i++) {
 		int x = i % 8;
 		int y = i / 8;
 		arr[i] = new Sprite(items, x * 16, y * 16, 16, 16, true);
@@ -35,8 +37,67 @@ ItemSprites::ItemSprites()
 
 Sprite* ItemSprites::getSprite(int idx)
 {
-	if (idx < 20) {
+	if (idx < 21) {
 		return arr[idx];
 	}
 	return NULL;
+}
+
+DropManager::DropManager()
+{
+	drops.clear();
+}
+
+void DropManager::addDrop(ItemDrop* drop)
+{
+	drops.push_back(drop);
+}
+
+void DropManager::clearDrops()
+{
+	drops.clear();
+}
+
+void DropManager::update(glm::vec2 position)
+{
+	position *= 2.0f;
+	std::vector<ItemDrop*> temps;
+	temps.clear();
+
+	for (auto a : drops) {
+		
+		if (((a->pos.x - position.x) * (a->pos.x - position.x)) < (16 * 16) && ((a->pos.y - position.y) * (a->pos.y - position.y)) < (16 * 16)) {
+			
+			if (g_Inventory->tryAddItem(a->itm)) {
+				for (int i = 0; i < a->quantity - 1; i++) {
+					g_Inventory->tryAddItem(a->itm);
+				}
+			}
+			else {
+				temps.push_back(a);
+			}
+		}
+		else {
+			temps.push_back(a);
+		}
+	}
+
+	drops.clear();
+
+	for (auto a : temps) {
+		drops.push_back(a);
+	}
+		
+}
+
+void DropManager::draw()
+{
+	for (auto a : drops) {
+		if (a != NULL) {
+			auto spr = g_Inventory->sprites->getSprite(a->itm.ID);
+
+			spr->SetPosition(a->pos.x, a->pos.y);
+			spr->Draw();
+		}
+	}
 }

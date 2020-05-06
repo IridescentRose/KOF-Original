@@ -4,32 +4,33 @@ CombatText::CombatText()
 {
 	txt = new UIText({ 240, 136 }, "");
 	txt->setOptions({ 0.5f, 0xFF0000FF, INTRAFONT_ALIGN_CENTER });
+	map = NULL;
 }
 
 void CombatText::addText(CombatTextDetails* d)
 {
-	map.emplace(d->color, d);
+	map = d;
 }
 
 void CombatText::update()
 {
-	for (auto [color, d] : map) {
-		d->pos -= rand() % 4;
-		d->ticks--;
+	if (map != NULL) {
+		map->pos -= rand() % 4;
+		map->ticks--;
 
-		if (d->ticks <= 0) {
-			delete d;
-			map.erase(color);
+		if (map->ticks == 0) {
+			delete map;
+			map = NULL;
 		}
 	}
 }
 
 void CombatText::draw()
 {
-	for (auto [color, d] : map) {
-		txt->setContent(d->text);
-		txt->setPosition(d->pos);
-		txt->setOptions({ 0.5f, d->color, INTRAFONT_ALIGN_CENTER });
+	if(map != NULL){
+		txt->setContent(map->text);
+		txt->setPosition(map->pos);
+		txt->setOptions({ 0.5f, map->color, INTRAFONT_ALIGN_CENTER });
 
 		txt->draw();
 	}

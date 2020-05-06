@@ -53,8 +53,11 @@ private:
 	bool prevEngage;
 	int hotbarPosition;
 	CombatText* txt;
-	PlayerInfo player;
+	int removeAmount;
+	DropManager* drops;
 };
+
+extern PlayerInfo player;
 
 struct TutProgInfo {
 	bool talkToSettler;

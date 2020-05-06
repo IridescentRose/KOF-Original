@@ -24,6 +24,8 @@ Inventory::Inventory()
 	for (int i = 0; i < 40; i++) {
 		slots[i] = { Items::NONE, 0 };
 	}
+	
+
 	sprites = new ItemSprites();
 
 	txt = new UIText({0, 0}, "");

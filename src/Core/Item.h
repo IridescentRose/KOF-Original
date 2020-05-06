@@ -44,6 +44,7 @@ public:
 	static Item WOOD;
 	static Item COBBLESTONE;
 	static Item ACORN;
+	static Item SEEDS;
 };
 
 class ItemSprites {
@@ -54,5 +55,25 @@ public:
 
 private:
 	Texture* items;
-	Sprite* arr[20];
+	Sprite* arr[21];
+};
+
+struct ItemDrop {
+	Item itm;
+	glm::vec2 pos;
+	char quantity;
+};
+
+class DropManager {
+public:
+	DropManager();
+
+	void addDrop(ItemDrop* drop);
+	void clearDrops();
+
+	void update(glm::vec2 position);
+	void draw();
+
+private:
+	std::vector<ItemDrop*> drops;
 };

@@ -41,6 +41,7 @@ void MenuState::init()
 
 	mainTheme = new Audio::AudioClip("./assets/main/maintheme.bgm", true);
 	mainTheme->Play(7);
+	
 
 	click = new Audio::AudioClip("./assets/main/click.wav");
 }

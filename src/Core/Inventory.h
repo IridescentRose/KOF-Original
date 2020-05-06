@@ -31,6 +31,10 @@ public:
 		return slots[slot].item;
 	}
 
+	inline ItemSlot* getItemSlot(int slot) {
+		return &slots[slot];
+	}
+
 	bool isEngaged();
 
 	void update();

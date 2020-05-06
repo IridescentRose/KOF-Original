@@ -136,8 +136,8 @@ void TutorialState::init()
 	prevEngage = false;
 
 	player.energy = 10;
-	player.health = 20;
-	player.hunger = 20;
+	player.health = 20.5f;
+	player.hunger = 20.5f;
 	player.gold = 100;
 	drops = new DropManager();
 }
@@ -183,6 +183,13 @@ void TutorialState::update(GameStateManager* st)
 	if (player.health < 20 && player.hunger > 6) {
 		player.hunger -= 0.025f / 20.0f;
 		player.health += 0.125f / 20.0f;
+	}
+
+	if (player.health > 20.5f) {
+		player.health = 20.5f;
+	}
+	if (player.hunger > 20.5f) {
+		player.hunger = 20.5f;
 	}
 
 	if (player.hunger <= 1) {
@@ -262,6 +269,17 @@ void TutorialState::update(GameStateManager* st)
 				int x = ((int)pos.x) / 16;
 				int y = ((int)pos.y) / 16;
 
+				if (g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID && player.energy > 5) {
+					if (player.hunger < 20.5f) {
+						player.hunger += 5;
+						player.health += 2;
+					}
+					g_Inventory->getItemSlot(hotbarPosition)->quantity--;
+					if (g_Inventory->getItemSlot(hotbarPosition)->quantity == 0) {
+						g_Inventory->getItemSlot(hotbarPosition)->item = Items::NONE;
+					}
+				}
+
 				if (tmap->getTile(x + y * 64)->texIndex > 18 && tmap->getTile(x + y * 64)->texIndex <= 22 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
 					Tile* t = new Tile();
 					t->offset = { x * 32, y * 32 };
@@ -290,12 +308,19 @@ void TutorialState::update(GameStateManager* st)
 					ItemDrop* drp2 = new ItemDrop();
 					drp2->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
 					drp2->itm = Items::SEEDS;
-					drp2->quantity = 1 + rand() % 2;
+					drp2->quantity = 1 + rand() % 3;
+
+					if (tmap->getTile(x + y * 64)->texIndex <= 21) {
+						drp2->quantity = 1;
+						drops->addDrop(drp2);
+					}
+					else {
+						drops->addDrop(drp);
+						drops->addDrop(drp2);
+					}
 
 					progInfo.canCompleteFarmer = true;
 
-					drops->addDrop(drp);
-					drops->addDrop(drp2);
 				}
 
 				if (tmap->getTile(x + y * 64)->texIndex == 23 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_PICKAXE.ID && player.energy > 5) {

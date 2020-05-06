@@ -15,6 +15,14 @@
 
 using namespace Stardust::Graphics;
 
+struct PlayerInfo {
+	float health;
+	float hunger;
+	float energy;
+
+	int gold;
+};
+
 class TutorialState : public GameState {
 public:
 	TutorialState();
@@ -45,6 +53,7 @@ private:
 	bool prevEngage;
 	int hotbarPosition;
 	CombatText* txt;
+	PlayerInfo player;
 };
 
 struct TutProgInfo {

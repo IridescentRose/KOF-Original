@@ -140,6 +140,11 @@ void TutorialState::init()
 	dt->ticks = 20; 
 	dt->pos = { 240, 136 };
 	txt->addText(dt);
+
+	player.energy = 10;
+	player.health = 20;
+	player.hunger = 20;
+	player.gold = 100;
 }
 
 void TutorialState::cleanup()
@@ -160,6 +165,37 @@ void TutorialState::resume()
 
 void TutorialState::update(GameStateManager* st)
 {
+
+	hud->setGold(player.gold);
+	hud->setEnergy(player.energy);
+	hud->setHealth(player.health);
+	hud->setHunger(player.hunger);
+
+	if (player.energy < 10 && player.hunger > 2) {
+		player.hunger -= 0.001f / 2.0f;
+		player.energy += 0.100f / 2.0f;
+	}
+
+	if (player.energy >= 10) {
+		player.energy = 10;
+	}
+
+	if (player.health < 20 && player.hunger > 6) {
+		player.hunger -= 0.025f / 20.0f;
+		player.health += 0.125f / 20.0f;
+	}
+
+	if (player.health <= 0) {
+		//DIE!
+
+	}
+
+	if (player.hunger <= 0) {
+		player.health -= 0.1f / 10.0f;
+		player.hunger = 0;
+	}
+
+	bool removeEnergy = false;
 
 	g_Inventory->update();
 	if (!dialog->isEngaged() && !g_Inventory->isEngaged()) {
@@ -196,7 +232,10 @@ void TutorialState::update(GameStateManager* st)
 
 			}
 
-			hud->triggerHit(controller->getCharacterSprite()->getFacing());
+			if (player.energy >= 1) {
+				hud->triggerHit(controller->getCharacterSprite()->getFacing());
+				removeEnergy = true;
+			}
 		}
 	}
 
@@ -264,6 +303,12 @@ void TutorialState::update(GameStateManager* st)
 			Utilities::addActionKeyPair("walkDown", PSP_CTRL_DOWN);
 			Utilities::addActionKeyPair("walkLeft", PSP_CTRL_LEFT);
 			Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
+		}
+
+	}
+	else {
+		if (removeEnergy) {
+			player.energy -= 1;
 		}
 	}
 	prevEngage = dialog->isEngaged() || g_Inventory->isEngaged();

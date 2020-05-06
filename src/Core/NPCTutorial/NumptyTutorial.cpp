@@ -141,7 +141,7 @@ Dialog* NumptyTutorial::getDialog()
 			
 			g_Inventory->tryAddItem(Items::IRON_HOE);
 		}
-		else if (progInfo.canCompleteFarmer) {
+		else if (progInfo.canCompleteFarmer && !progInfo.completeFarmer) {
 			progInfo.completeFarmer = true;
 			d->text = "Thanks whippersnapper! Now let's get down to business.\nTake some bread here, and gold... and come here...\n*CHOMP*\nThank you fer the donation!";
 
@@ -166,7 +166,7 @@ Dialog* NumptyTutorial::getDialog()
 			d->text = "Good morning sir! What brings you here? I see...\nYou need a weapon to defend yourself! Let's see!\nI spotted some bandits to the north... I got one, but the\nother escaped! Take this sword and take him on.\nIf you succeed, keep it as a gift.";
 			g_Inventory->tryAddItem(Items::IRON_SWORD);
 		}
-		else if (progInfo.canCompleteGuard) {
+		else if (progInfo.canCompleteGuard && !progInfo.completeGuard) {
 			progInfo.completeGuard = true;
 			d->text = "Thank you! Here's the bounty!\n";
 			player.gold += 250;
@@ -184,7 +184,7 @@ Dialog* NumptyTutorial::getDialog()
 			d->text = "Hello. What brings you here? Ah...\nI can lend you a pickaxe, but you're going to need to get\nsome stone to help me replace it. I'll even pay you!";
 			g_Inventory->tryAddItem(Items::IRON_PICKAXE);
 		}
-		else if (progInfo.canCompleteMiner) {
+		else if (progInfo.canCompleteMiner && !progInfo.completeMiner) {
 			progInfo.canCompleteMiner = true;
 			d->text = "Ah! This is great. Just one more thing...\n*CHOMP* Delicious!";
 			player.gold += 100;
@@ -203,7 +203,7 @@ Dialog* NumptyTutorial::getDialog()
 			d->text = "Mornin' to you, son. How can I help you? Hm...\nI can give you an old axe, but you'll need to go get\nme a few logs. I'll get you something special!";
 			g_Inventory->tryAddItem(Items::IRON_AXE);
 		}
-		else if (progInfo.canCompleteLumber) {
+		else if (progInfo.canCompleteLumber && !progInfo.completeLumber) {
 			progInfo.canCompleteLumber = true;
 			d->text = "Hello, hello! Thank you for the wood!\nAs promised, take this apple!";
 			g_Inventory->tryAddItem(Items::APPLE);

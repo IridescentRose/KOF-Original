@@ -135,13 +135,6 @@ void TutorialState::init()
 	txt = new CombatText();
 	prevEngage = false;
 
-	CombatTextDetails* dt = new CombatTextDetails();
-	dt->text = "14";
-	dt->color = 0xFF0000FF;
-	dt->ticks = 20; 
-	dt->pos = { 240, 136 };
-	txt->addText(dt);
-
 	player.energy = 10;
 	player.health = 20;
 	player.hunger = 20;

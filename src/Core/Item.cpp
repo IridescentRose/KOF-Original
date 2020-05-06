@@ -66,7 +66,7 @@ void DropManager::update(glm::vec2 position)
 
 	for (auto a : drops) {
 		
-		if (((a->pos.x - position.x) * (a->pos.x - position.x)) < (16 * 16) && ((a->pos.y - position.y) * (a->pos.y - position.y)) < (16 * 16)) {
+		if (((a->pos.x - position.x) * (a->pos.x - position.x)) < (12 * 12) && ((a->pos.y - position.y) * (a->pos.y - position.y)) < (12 * 12)) {
 			
 			if (g_Inventory->tryAddItem(a->itm)) {
 				for (int i = 0; i < a->quantity - 1; i++) {

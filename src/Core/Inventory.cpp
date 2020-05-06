@@ -86,8 +86,10 @@ bool Inventory::tryAddItem(Item itm)
 			return true;
 		}
 		else if (slots[attempt].item.ID == itm.ID) {
-			slots[attempt].quantity++;
-			return true;
+			if (slots[attempt].quantity + 1 < 65) {
+				slots[attempt].quantity++;
+				return true;
+			}
 		}
 		attempt++;
 
@@ -166,8 +168,17 @@ void Inventory::update()
 				}
 				else if (slots[position.y * 10 + position.x].item.ID == held.item.ID) {
 					if (!held.item.special) {
-						slots[position.y * 10 + position.x].quantity += held.quantity;
-						held = { Items::NONE, 0 };
+						if (slots[position.y * 10 + position.x].quantity + held.quantity < 65) {
+							slots[position.y * 10 + position.x].quantity += held.quantity;
+							held = { Items::NONE, 0 };
+						}
+						else {
+							int canAdd = 64 - slots[position.y * 10 + position.x].quantity;
+							if (canAdd > 0) {
+								slots[position.y * 10 + position.x].quantity = 64;
+								held.quantity -= canAdd;
+							}
+						}
 					}
 				}
 			}

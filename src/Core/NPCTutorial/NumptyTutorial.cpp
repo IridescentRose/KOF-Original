@@ -49,7 +49,7 @@ NumptyTutorial::NumptyTutorial(glm::vec2 startPosition, char r, Tilemap* tmap1, 
 
 void NumptyTutorial::simpleAITick()
 {
-	if (tag == "numpty") {
+	if (tag == "numpty" || tag == "bandit") {
 
 		ticksTilAction--;
 		ticksMovement--;
@@ -84,7 +84,14 @@ void NumptyTutorial::update()
 
 void NumptyTutorial::handleAction(char action)
 {
-	ticksMovement = rand() % 15 + 5;
+	if (tag == "bandit") {
+
+		ticksMovement = rand() % 50 + 10;
+	}
+	else {
+		ticksMovement = rand() % 15 + 5;
+
+	}
 
 	if (action == NPC_ACTION_WALK) {
 		switch (controller->getCharacterSprite()->getFacing()) {
@@ -163,12 +170,12 @@ Dialog* NumptyTutorial::getDialog()
 	else if (tag == "guard" && progInfo.talkToSettler) {
 		if (!progInfo.talkGuard) {
 			progInfo.talkGuard = true;
-			d->text = "Good morning sir! What brings you here? I see...\nYou need a weapon to defend yourself! Let's see!\nI spotted some bandits to the north... I got one, but the\nother escaped! Take this sword and take him on.\nIf you succeed, keep it as a gift.";
+			d->text = "Good morning sir! What brings you here? I see...\nYou need a weapon to defend yourself! Let's see!\nI spotted some bandits to the north... I got one, but the\nother escaped! Take this sword and take him on.\nHe's injured so he can't fight or move fast.";
 			g_Inventory->tryAddItem(Items::IRON_SWORD);
 		}
 		else if (progInfo.canCompleteGuard && !progInfo.completeGuard) {
 			progInfo.completeGuard = true;
-			d->text = "Thank you! Here's the bounty!\n";
+			d->text = "Huh. Well as long as no harm is done and he goes away\nI'm alright with this. Either way, take the bounty!";
 			player.gold += 250;
 		}
 		else if (!progInfo.canCompleteGuard) {
@@ -207,12 +214,38 @@ Dialog* NumptyTutorial::getDialog()
 			progInfo.canCompleteLumber = true;
 			d->text = "Hello, hello! Thank you for the wood!\nAs promised, take this apple!";
 			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+			g_Inventory->tryAddItem(Items::APPLE);
+
+			player.gold += 50;
 		}
 		else if (!progInfo.canCompleteLumber) {
 			d->text = "I still see those trees! What are you doing?";
 		}
 		else {
 			d->text = "I have a feeling you'll be seeing a lot of trees.";
+		}
+	}
+	else if (tag=="bandit"){
+		if (!progInfo.canCompleteGuard) {
+			d->text = "Woah! Kid please don't hurt me! Stop! I'm asking you,\nI just lost my brother. Calm down for one moment.\nI swear I'll leave this village alone! You're going settling\nright? I'll make sure that wherever you settle, you'll be\nimmune from raids for the first 15 days! I'll give\n the guard all the loot back okay? Please!\n";
+			progInfo.canCompleteGuard = true;
+		}
+		else if(!progInfo.completeGuard){
+			d->text = "Hey! Go tell the guard before he kills me!";
+		}
+		else {
+			d->text = "I'll be leaving tomorrow. I gave back everything.\nIt'd be nice one day just to be in the middle of a village...\nto live a simple life. But I need some action\n maybe that's what you're after?";
 		}
 	}
 	else {

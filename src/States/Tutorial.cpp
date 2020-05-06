@@ -269,7 +269,7 @@ void TutorialState::update(GameStateManager* st)
 				int x = ((int)pos.x) / 16;
 				int y = ((int)pos.y) / 16;
 
-				if (g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID && player.energy > 5) {
+				if ((g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID || g_Inventory->getItem(hotbarPosition).ID == Items::APPLE.ID)&& player.energy > 5) {
 					if (player.hunger < 20.5f) {
 						player.hunger += 5;
 						player.health += 2;
@@ -353,6 +353,57 @@ void TutorialState::update(GameStateManager* st)
 					drops->addDrop(drp);
 				}
 
+				for (int i = 0; i < 4; i++) {
+					auto tree = treemap->getTile(i);
+
+					if (tree->rgba > 0) {
+
+						glm::vec2 playerPos = (tree->offset + tree->extent / 2.0f) / 2.0f;
+						Utilities::app_Logger->log("TREE " + std::to_string(playerPos.x) + " " + std::to_string(playerPos.y));
+						Utilities::app_Logger->log("PLAYER " + std::to_string(pos.x) + " " + std::to_string(pos.y));
+						bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (32 * 32) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (32 * 32);
+
+						if (isInRange && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 5) {
+							tree->rgba = 0;
+							tree->physics = false;
+
+							removeAmount = 5;
+							CombatTextDetails* dt = new CombatTextDetails();
+							dt->text = "10";
+							dt->color = 0xFF0000FF;
+							dt->ticks = 20;
+							dt->pos = { 240, 136 };
+							txt->addText(dt);
+
+							ItemDrop* drp = new ItemDrop();
+							drp->itm = Items::LOGS;
+							drp->quantity = 3 + rand() % 4;
+							drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+							ItemDrop* drp2 = new ItemDrop();
+							drp2->itm = Items::ACORN;
+							drp2->quantity = 1 + rand() % 4;
+							drp2->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+
+
+							ItemDrop* drp3 = new ItemDrop();
+							drp3->itm = Items::APPLE;
+							drp3->quantity = (1 + rand() % 5) / 5;
+							drp3->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+								
+
+							progInfo.canCompleteLumber = true;
+
+							drops->addDrop(drp);
+							drops->addDrop(drp2);
+							drops->addDrop(drp3);
+
+							treemap->buildMap();
+						}
+
+
+					}
+				}
+
 			}
 		}
 	}
@@ -380,8 +431,10 @@ void TutorialState::update(GameStateManager* st)
 			progInfo.tutorialCombatTriggered = true;
 			Dialog* d = new Dialog();
 			d->interactionType = INTERACTION_TYPE_NONE;
-			d->text = "Tutorial: Go find the bandit and take him down!\nWith sword equipped, hitting X will swing your sword!";
+			d->text = "Tutorial: Go find the bandit and take him down!\nWith sword equipped, hitting X will swing your sword!\nBandits are in black.";
 			dial->addDialog(d);
+
+			npcs.push_back(new NumptyTutorial({ 32 * 52, 32 * 10 }, 3, tmap, treemap, "./assets/game/NPC/bandit.png", "bandit"));
 		}
 	}
 	if (progInfo.talkMiner) {

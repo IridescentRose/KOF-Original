@@ -142,7 +142,7 @@ void TutorialState::init()
 	txt->addText(dt);
 
 	player.energy = 10;
-	player.health = 20;
+	player.health = 0;
 	player.hunger = 20;
 	player.gold = 100;
 }
@@ -180,17 +180,17 @@ void TutorialState::update(GameStateManager* st)
 		player.energy = 10;
 	}
 
+	if (player.health <= 0) {
+		die();
+	}
+
+
 	if (player.health < 20 && player.hunger > 6) {
 		player.hunger -= 0.025f / 20.0f;
 		player.health += 0.125f / 20.0f;
 	}
 
-	if (player.health <= 0) {
-		//DIE!
-
-	}
-
-	if (player.hunger <= 0) {
+	if (player.hunger <= 1) {
 		player.health -= 0.1f / 10.0f;
 		player.hunger = 0;
 	}

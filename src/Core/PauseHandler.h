@@ -6,3 +6,5 @@ using namespace Stardust::Graphics::UI;
 using namespace Stardust::Graphics;
 
 void pauseHandler();
+
+void die();

@@ -212,7 +212,7 @@ Dialog* NumptyTutorial::getDialog()
 			g_Inventory->tryAddItem(Items::IRON_AXE);
 		}
 		else if (progInfo.canCompleteLumber && !progInfo.completeLumber) {
-			progInfo.canCompleteLumber = true;
+			progInfo.completeLumber = true;
 			d->text = "Hello, hello! Thank you for the wood!\nAs promised, take this apple!";
 			g_Inventory->tryAddItem(Items::APPLE);
 			g_Inventory->tryAddItem(Items::APPLE);

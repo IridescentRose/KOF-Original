@@ -1,5 +1,6 @@
 #include "World.h"
 #include <Utilities/Input.h>
+#include "../RAM.h"
 
 World::World()
 {
@@ -49,6 +50,10 @@ World::World()
 	hud = new HUD();
 	drops = new DropManager();
 	lastPos = { -1, -1 };
+
+	debugRAM = new UIText({ 0, 10 }, "RAM: ");
+	debugRAM->setOptions({ 0.5f, 0xFFFFFFFF, INTRAFONT_ALIGN_LEFT });
+
 }
 
 World::~World()
@@ -58,12 +63,12 @@ World::~World()
 void World::update()
 {
 	glm::ivec2 v = { (int)(charSprite->getPosition().x / (32.0f*8.0f) ), (int)(charSprite->getPosition().y / (32.0f * 8.0f)) };
-
+	
 	if (v != lastPos) {
 		//WORLD MANAGEMENT
 		glm::vec2 topLeft = { v.x - 2, v.y - 2 };
 		glm::vec2 botRight = { v.x + 2, v.y + 2 };
-
+	
 		std::vector <Vector3i> needed;
 		needed.clear();
 		std::vector<Vector3i> excess;
@@ -83,18 +88,18 @@ void World::update()
 					need = true;
 				}
 			}
-
+	
 			if (!need) {
 				excess.push_back(pos);
 			}
 		}
-
+	
 		//DIE OLD ONES!
 		for (auto chk : excess) {
 			delete chunkMap[chk];
 			chunkMap.erase(chk);
 		}
-
+	
 		//Make new
 		for (auto chk : needed) {
 			if (chunkMap.find(chk) == chunkMap.end()) {
@@ -102,23 +107,23 @@ void World::update()
 				Chunk* chunk = new Chunk(chk.x, chk.y);
 				chunk->generate();
 				chunk->saveGenerate();
-
+	
 				chunkMap.emplace(chk, std::move(chunk));
 			}
 		}
-
+	
 		lastPos = v;
 	}
-
+	
 	for (auto [key, chk] : chunkMap) {
 		chk->update();
 	}
-
+	
 	hud->setGold(player.gold);
 	hud->setEnergy(player.energy);
 	hud->setHealth(player.health);
 	hud->setHunger(player.hunger);
-
+	
 	g_Inventory->update();
 	controller->update(0.016f);
 	hud->update();
@@ -135,13 +140,19 @@ void World::draw()
 	
 	drops->draw();
 	controller->draw();
-
+	
 	g_RenderCore.Set2DMode();
-
+	
 	//UI
 	hud->draw();
 	g_Inventory->drawHotbar();
 	g_Inventory->draw();
+
+
+	//DEBUG
+	u32 ramFree = freeMemory();
+	debugRAM->setContent("RAM: " + std::to_string(ramFree));
+	debugRAM->draw();
 }
 
 World* g_World = NULL;

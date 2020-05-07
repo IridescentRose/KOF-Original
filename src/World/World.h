@@ -25,6 +25,7 @@ private:
 	DropManager* drops;
 	HUD* hud;
 	std::map<Vector3i, Chunk*> chunkMap;
+	UIText* debugRAM;
 
 	glm::ivec2 lastPos;
 };

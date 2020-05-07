@@ -1,11 +1,10 @@
 #pragma once
 #include "../GameDialog.h"
-#include <Graphics/2D/SpriteBase.h>
-#include <Utilities/Timer.h>
+#include "../World/World.h"
+
 #include "Menu.h"
 #include "Tutorial.h"
-
-using namespace Stardust::Graphics;
+#include "../World/World.h"
 
 class MainState : public GameState {
 public:
@@ -22,10 +21,4 @@ public:
 	void draw(GameStateManager* st);
 
 private:
-	Texture* texAtlas, * charTexture, * tree;
-	TextureAtlas* atlas;
-	Render2D::CharacterSprite* charSprite;
-	Render2D::TopDownController* controller;
-	DropManager* drops;
-	HUD* hud;
 };

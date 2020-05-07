@@ -13,6 +13,8 @@ src/Core/Combat/CombatText.o \
 src/Core/Dialogue.o \
 src/Core/NPCTutorial/NumptyTutorial.o \
 src/States/MainState.o \
+src/World/Chunk.o \
+src/World/World.o \
 src/Main.o 
 
 INCDIR = $(PSPPATH)/include

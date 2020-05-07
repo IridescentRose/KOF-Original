@@ -21,8 +21,8 @@ void Application::run()
 	st->init();
 	gsm->changeState(st);
 #else
-
-	TutorialState* tst = new TutorialState();
+	g_Inventory = new Inventory();
+	MainState* tst = new MainState();
 	tst->init();
 
 

@@ -26,8 +26,16 @@ private:
 	HUD* hud;
 	std::map<Vector3i, Chunk*> chunkMap;
 	UIText* debugRAM;
-
+	int hotbarPosition;
 	glm::ivec2 lastPos;
+	Dialogue* dialog;
+	DialogStack* dial;
+	bool prevEngage;
+	CombatText* txt;
+
+	void playerUpdate();
+	void animUpdate();
+	void chunkgenUpdate();
 };
 
 extern World* g_World;

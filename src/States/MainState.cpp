@@ -1,4 +1,6 @@
 #include "MainState.h"
+#include "../Core/PauseHandler.h"
+#include <Utilities/Input.h>
 
 MainState::MainState()
 {
@@ -28,6 +30,11 @@ void MainState::resume()
 void MainState::update(GameStateManager* st)
 {
 	g_World->update();
+
+	if (Utilities::KeyPressed(PSP_CTRL_START)) {
+		pauseHandler();
+	}
+
 }
 
 void MainState::draw(GameStateManager* st)

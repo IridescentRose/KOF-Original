@@ -32,16 +32,19 @@ void Chunk::generate()
 	for (int y = 0; y < 16; y++) {
 		for (int x = 0; x < 16; x++) {
 			double sample = noise->accumulatedOctaveNoise2D_0_1((double)(x + positionXY.x * 16) / 16.0f, (double)(y + positionXY.y * 16) / 16.0f, 1) * 2.0f;
-			
+
 			TileAnim* t = new TileAnim();
 			t->isAnim = false;
 			t->rgba = 0xFFFFFFFF;
 			t->layer = -1;
 			t->rotation = 0;
 			t->physics = false;
-			t->offset = { x * 32 + (positionXY.x * 16 * 32) , y * 32 + (positionXY.y * 16 * 32) - 272};
+			t->offset = { x * 32 + (positionXY.x * 16 * 32) , y * 32 + (positionXY.y * 16 * 32) - 272 };
 			t->extent = { 32, 32 };
 
+			bool spawnpoint = (positionXY == glm::vec2(0, 0)) && glm::vec2(x * 32 + positionXY.x * 16 * 32, y * 32 + positionXY.y * 16 * 32) == glm::vec2(0, 0);
+
+			if(!spawnpoint){
 			if (sample > 0.72f * 2.0f) {
 				t->physics = true;
 				t->texIndex = 24 + 3;
@@ -79,13 +82,15 @@ void Chunk::generate()
 			if (sample > 0.36f * 2.0f && sample < 0.42f * 2.0f) {
 				t->texIndex = 26 + 3;
 			}
+			}
+			
 
 
 			tmap->addTile(t);
 
-			if (t->texIndex == 0) {
+			if (t->texIndex == 0 && !t->isAnim) {
 				srand(x + positionXY.x * 16 * (y + positionXY.y * 16) * (y + positionXY.y * 16));
-				if (rand() % 20 == 0) {
+				if (rand() % 20 == 0 && !spawnpoint) {
 					TileAnim* t2 = new TileAnim();
 					t2->isAnim = true;
 					t2->indexStart = 0;
@@ -94,8 +99,8 @@ void Chunk::generate()
 					t2->rgba = 0xFFFFFFFF;
 					t2->layer = 0;
 					t2->rotation = 0;
-					t2->physics = false;
-					t2->offset = { (x-1) * 32 + (positionXY.x * 16 * 32) , (y-1) * 32 + (positionXY.y * 16 * 32) - 272};
+					t2->physics = true;
+					t2->offset = { (x) * 32 + (positionXY.x * 16 * 32) , (y-1) * 32 + (positionXY.y * 16 * 32) - 272};
 					t2->extent = { 64, 64 };
 
 					treemap->addTile(t2);

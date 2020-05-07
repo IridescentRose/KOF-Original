@@ -142,12 +142,6 @@ void TutorialState::init()
 	player.hunger = 20.5f;
 	player.gold = 100;
 	drops = new DropManager();
-
-	progInfo.talkToSettler = true;
-	progInfo.completeFarmer = true;
-	progInfo.completeGuard = true;
-	progInfo.completeLumber = true;
-	progInfo.completeMiner = true;
 }
 
 void TutorialState::cleanup()

@@ -68,6 +68,14 @@ void Chunk::generate()
 				t->animLength = 3;
 			}
 
+			if (sample < 0.29f * 2.0f) {
+				t->texIndex = 18 + 16;
+				t->isAnim = true;
+				t->indexStart = 18 + 16;
+				t->tickNumber = rand() % 5;
+				t->animLength = 3;
+			}
+
 			if (sample > 0.36f * 2.0f && sample < 0.42f * 2.0f) {
 				t->texIndex = 26 + 3;
 			}

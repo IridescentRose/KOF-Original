@@ -14,6 +14,8 @@
 #include "../Core/Combat/CombatText.h"
 #include <Audio/AudioClip.h>
 
+#include "MainState.h"
+
 using namespace Stardust::Graphics;
 
 struct PlayerInfo {
@@ -48,7 +50,6 @@ private:
 	Render2D::Tilemap* treemap;
 	int stage;
 	HUD* hud;
-	Inventory* inv;
 	Dialogue* dialog;
 	DialogStack* dial;
 	bool prevEngage;

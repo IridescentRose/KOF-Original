@@ -152,6 +152,23 @@ void TutorialState::init()
 
 void TutorialState::cleanup()
 {
+
+	std::vector<NPC*> npcs;
+	delete texAtlas;
+	delete charTexture;
+	delete tree;
+
+	delete atlas;
+	delete charSprite;
+	delete controller;
+	delete tmap;
+	delete treemap;
+	delete hud;
+	delete dialog;
+	delete dial;
+	delete txt;
+	delete drops;
+	delete clip;
 }
 
 void TutorialState::enter()
@@ -478,6 +495,10 @@ void TutorialState::update(GameStateManager* st)
 			if (progInfo.tutorialCompleted) {
 				//END OF TUTORIAL!
 				endTutorial();
+
+				MainState* mss = new MainState();
+				st->changeState(mss);
+				return;
 			}
 		}
 

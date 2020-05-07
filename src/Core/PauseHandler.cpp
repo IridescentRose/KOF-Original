@@ -73,7 +73,7 @@ void endTutorial()
 		Platform::platformUpdate();
 
 		if (Utilities::KeyPressed(PSP_CTRL_CROSS)) {
-			sceKernelExitGame();
+			break;
 		}
 
 		g_RenderCore.EndCommands();

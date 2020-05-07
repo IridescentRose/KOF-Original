@@ -22,10 +22,9 @@ void Application::run()
 	gsm->changeState(st);
 #else
 
-	MainState* tst = new MainState();
+	TutorialState* tst = new TutorialState();
 	tst->init();
 
-	g_Inventory = new Inventory();
 
 	gsm->changeState(tst);
 

@@ -177,6 +177,21 @@ void TutorialState::enter()
 
 void TutorialState::pause()
 {
+	delete texAtlas;
+	delete charTexture;
+	delete tree;
+
+	delete atlas;
+	delete charSprite;
+	delete controller;
+	delete tmap;
+	delete treemap;
+	delete hud;
+	delete dialog;
+	delete dial;
+	delete txt;
+	delete drops;
+	delete clip;
 }
 
 void TutorialState::resume()
@@ -498,7 +513,7 @@ void TutorialState::update(GameStateManager* st)
 
 				MainState* mss = new MainState();
 				mss->init();
-				st->changeState(mss);
+				st->addState(mss);
 				return;
 			}
 		}

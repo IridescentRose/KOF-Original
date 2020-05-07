@@ -3,6 +3,7 @@
 #include <Graphics/2D/TilemapAnim.h>
 #include <Graphics/2D/CharacterSprite.h>
 #include <Graphics/UI/UIText.h>
+#include "Perlin.h"
 
 using namespace Stardust;
 using namespace Stardust::Graphics::Render2D;
@@ -23,8 +24,11 @@ public:
 private:
 	glm::vec2 positionXY;
 	TilemapAnim* tmap;
+	TilemapAnim* treemap;
 	
 
 };
 
 extern Texture* terrain_atlas;
+extern Texture* treez;
+extern siv::PerlinNoise* noise;

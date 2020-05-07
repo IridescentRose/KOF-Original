@@ -20,11 +20,11 @@ public:
 
 	void update();
 	void draw();
-	
-private:
-	glm::vec2 positionXY;
+
 	TilemapAnim* tmap;
 	TilemapAnim* treemap;
+private:
+	glm::vec2 positionXY;
 	
 
 };

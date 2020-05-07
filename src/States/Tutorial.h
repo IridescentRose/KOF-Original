@@ -12,6 +12,7 @@
 #include "../Core/NPCTutorial/NumptyTutorial.h"
 #include "../Core/Dialogue.h"
 #include "../Core/Combat/CombatText.h"
+#include <Audio/AudioClip.h>
 
 using namespace Stardust::Graphics;
 

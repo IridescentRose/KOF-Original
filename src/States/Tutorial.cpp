@@ -142,6 +142,12 @@ void TutorialState::init()
 	player.hunger = 20.5f;
 	player.gold = 100;
 	drops = new DropManager();
+
+	progInfo.talkToSettler = true;
+	progInfo.completeFarmer = true;
+	progInfo.completeGuard = true;
+	progInfo.completeLumber = true;
+	progInfo.completeMiner = true;
 }
 
 void TutorialState::cleanup()
@@ -469,16 +475,16 @@ void TutorialState::update(GameStateManager* st)
 			Utilities::addActionKeyPair("walkDown", PSP_CTRL_DOWN);
 			Utilities::addActionKeyPair("walkLeft", PSP_CTRL_LEFT);
 			Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
+			if (progInfo.tutorialCompleted) {
+				//END OF TUTORIAL!
+				endTutorial();
+			}
 		}
 
 	}
 	else {
 		if (removeEnergy) {
 			player.energy -= removeAmount;
-		}
-		if (progInfo.tutorialCompleted) {
-			//END OF TUTORIAL!
-			sceKernelExitGame();
 		}
 	}
 	prevEngage = dialog->isEngaged() || g_Inventory->isEngaged();

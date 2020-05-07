@@ -39,7 +39,7 @@ void Chunk::generate()
 			t->layer = -1;
 			t->rotation = 0;
 			t->physics = false;
-			t->offset = { x * 32 + (positionXY.x * 16 * 32) , y * 32 + (positionXY.y * 16 * 32) };
+			t->offset = { x * 32 + (positionXY.x * 16 * 32) , y * 32 + (positionXY.y * 16 * 32) - 272};
 			t->extent = { 32, 32 };
 
 			if (sample > 0.72f * 2.0f) {
@@ -95,7 +95,7 @@ void Chunk::generate()
 					t2->layer = 0;
 					t2->rotation = 0;
 					t2->physics = false;
-					t2->offset = { (x-1) * 32 + (positionXY.x * 16 * 32) , (y-1) * 32 + (positionXY.y * 16 * 32) };
+					t2->offset = { (x-1) * 32 + (positionXY.x * 16 * 32) , (y-1) * 32 + (positionXY.y * 16 * 32) - 272};
 					t2->extent = { 64, 64 };
 
 					treemap->addTile(t2);
@@ -123,8 +123,12 @@ void Chunk::update()
 
 void Chunk::draw()
 {
+	sceGumPushMatrix();
+	ScePspFVector3 v = { 0, 272, 0 };
+	sceGumTranslate(&v);
 	tmap->drawMap();
 	treemap->drawMap();
+	sceGumPopMatrix();
 }
 
 Texture* terrain_atlas = NULL;

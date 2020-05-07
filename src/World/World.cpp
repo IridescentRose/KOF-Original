@@ -318,6 +318,14 @@ void World::chunkgenUpdate()
 			}
 		}
 
+		controller->clearPhysics();
+		for (auto& [pos, chunk] : chunkMap) {
+			controller->addPhysicsTileMap(chunk->tmap);
+			controller->addPhysicsTileMap(chunk->treemap);
+		}
+
+		Utilities::app_Logger->log(std::to_string(controller->getSize()));
+
 		lastPos = v;
 	}
 

@@ -497,6 +497,7 @@ void TutorialState::update(GameStateManager* st)
 				endTutorial();
 
 				MainState* mss = new MainState();
+				mss->init();
 				st->changeState(mss);
 				return;
 			}

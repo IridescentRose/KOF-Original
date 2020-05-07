@@ -49,7 +49,6 @@ private:
 	Render2D::Tilemap* tmap;
 	Render2D::Tilemap* treemap;
 	int stage;
-	HUD* hud;
 	Dialogue* dialog;
 	DialogStack* dial;
 	bool prevEngage;
@@ -57,6 +56,7 @@ private:
 	CombatText* txt;
 	int removeAmount;
 	DropManager* drops;
+	HUD* hud;
 	Audio::AudioClip* clip;
 };
 

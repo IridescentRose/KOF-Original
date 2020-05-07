@@ -3,6 +3,7 @@
 #include <Graphics/2D/SpriteBase.h>
 #include <Utilities/Timer.h>
 #include "Menu.h"
+#include "Tutorial.h"
 
 using namespace Stardust::Graphics;
 
@@ -21,4 +22,10 @@ public:
 	void draw(GameStateManager* st);
 
 private:
+	Texture* texAtlas, * charTexture, * tree;
+	TextureAtlas* atlas;
+	Render2D::CharacterSprite* charSprite;
+	Render2D::TopDownController* controller;
+	DropManager* drops;
+	HUD* hud;
 };

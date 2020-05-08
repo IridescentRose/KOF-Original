@@ -126,6 +126,7 @@ void Chunk::generate()
 
 		}
 	}
+
 	tmap->buildMap();
 	treemap->buildMap();
 }

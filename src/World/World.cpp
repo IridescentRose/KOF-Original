@@ -108,7 +108,7 @@ void World::draw()
 	hud->draw();
 	g_Inventory->drawHotbar();
 	g_Inventory->draw();
-
+	txt->draw();
 
 	//DEBUG
 	u32 ramFree = freeMemory();
@@ -132,9 +132,6 @@ TileAnim* World::getTile(int x, int y)
 		if (y < 0) {
 			rY = -rY;
 		}
-
-		Utilities::app_Logger->log("CHK: " + std::to_string(chkX) + " " + std::to_string(chkY));
-		Utilities::app_Logger->log("COORD: " + std::to_string(rX) + " " + std::to_string(rY));
 
 		return chunkMap[{chkX, chkY}]->tmap->getTile(rX + rY * 16);
 	}
@@ -392,7 +389,7 @@ void World::chunkgenUpdate()
 
 }
 
-void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmount)
+void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 {
 	if ((g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID || g_Inventory->getItem(hotbarPosition).ID == Items::APPLE.ID) && player.energy > 5) {
 		if (player.hunger < 20.5f) {
@@ -410,9 +407,6 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 
 	if (hitTile != NULL) {
 
-		Utilities::app_Logger->log("TILE HIT: " + std::to_string(x) + " " + std::to_string(y));
-		Utilities::app_Logger->log("PLAYER: " + std::to_string(charSprite->getPosition().x) + " " + std::to_string(charSprite->getPosition().y));
-		Utilities::app_Logger->log("TILE: " + std::to_string(hitTile->texIndex));
 
 		if (hitTile->texIndex == 27 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_PICKAXE.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
@@ -448,14 +442,6 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			t->texIndex = 0;
 			setTile(x, y, t);
 
-			(*removeAmount) = 2;
-			CombatTextDetails* dt = new CombatTextDetails();
-			dt->text = std::to_string(1);
-			dt->color = 0xFF0000FF;
-			dt->ticks = 20;
-			dt->pos = { 240, 136 };
-			txt->addText(dt);
-
 			ItemDrop* drp = new ItemDrop();
 			drp->itm = Items::SEEDS;
 			drp->quantity = 1;
@@ -488,6 +474,27 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			return;
 		}
 
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::ACORN.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 38;
+			t->isAnim = true;
+			t->indexStart = 38;
+			t->animLength = 3;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+			return;
+		}
+
 		if (hitTile->texIndex == 2 && g_Inventory->getItem(hotbarPosition).ID == Items::SEEDS.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
@@ -497,13 +504,6 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			t->texIndex = 0;
 			setTile(x, y, t);
 
-			(*removeAmount) = 5;
-			CombatTextDetails* dt = new CombatTextDetails();
-			dt->text = std::to_string(8 + rand() % 5);
-			dt->color = 0xFF0000FF;
-			dt->ticks = 20;
-			dt->pos = { 240, 136 };
-			txt->addText(dt);
 
 			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
 			slt->quantity--;
@@ -564,6 +564,44 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			t->texIndex = 23;
 			setTile(x, y, t);
 
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+			return;
+		}
+
+		if ((hitTile->texIndex == 0 || hitTile->texIndex == 29) && g_Inventory->getItem(hotbarPosition).ID == Items::LOGS.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = true;
+			t->texIndex = 31;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+			return;
+		}
+
+
+
+		if (hitTile->texIndex == 31 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
 			(*removeAmount) = 5;
 			CombatTextDetails* dt = new CombatTextDetails();
 			dt->text = std::to_string(8 + rand() % 5);
@@ -571,6 +609,12 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			dt->ticks = 20;
 			dt->pos = { 240, 136 };
 			txt->addText(dt);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::LOGS;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
 
 			return;
 		}
@@ -598,6 +642,80 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
 			drops->addDrop(drp);
 			return;
+		}
+
+
+
+		//TREEZ
+
+		int chkX = x / 16;
+		int chkY = y / 16;
+
+		if (chunkMap.find({ chkX, chkY }) != chunkMap.end()) {
+
+			Chunk* chk = chunkMap[{chkX, chkY}];
+			TilemapAnim* tmap = chk->treemap;
+
+			for (int i = 0; i < tmap->size(); i++) {
+
+				if(tmap->getTile(i)->layer == 0){
+				glm::vec2 playerPos = (tmap->getTile(i)->offset + tmap->getTile(i)->extent / 2.0f) / 2.0f;
+				playerPos.y += 136;
+
+				bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (40 * 40) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (40 * 40);
+				Utilities::app_Logger->log("TREE " + std::to_string(playerPos.x) + " " + std::to_string(playerPos.y));
+				Utilities::app_Logger->log("PLAYER " + std::to_string(pos.x) + " " + std::to_string(pos.x));
+				Utilities::app_Logger->log("IN RANGE " + std::to_string(isInRange));
+
+				if (isInRange && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 5) {
+
+
+					(*removeAmount) = 5;
+					CombatTextDetails* dt = new CombatTextDetails();
+					dt->text = "10";
+					dt->color = 0xFF0000FF;
+					dt->ticks = 20;
+					dt->pos = { 240, 136 };
+					txt->addText(dt);
+
+					ItemDrop* drp = new ItemDrop();
+					drp->itm = Items::LOGS;
+					drp->quantity = 3 + rand() % 4;
+					drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+					ItemDrop* drp2 = new ItemDrop();
+					drp2->itm = Items::ACORN;
+					drp2->quantity = 1 + rand() % 4;
+					drp2->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+
+
+					ItemDrop* drp3 = new ItemDrop();
+					drp3->itm = Items::APPLE;
+					drp3->quantity = (1 + rand() % 5) / 5;
+					drp3->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+
+					drops->addDrop(drp);
+					drops->addDrop(drp2);
+					drops->addDrop(drp3);
+
+					TileAnim* t2 = new TileAnim();
+					t2->isAnim = false;
+					t2->indexStart = 0;
+					t2->animLength = 0;
+					t2->tickNumber = 0;
+					t2->rgba = 0;
+					t2->layer = -2;
+					t2->rotation = 0;
+					t2->physics = false;
+					t2->offset = {0, 0 };
+					t2->extent = { 0, 0 };
+
+					chunkMap[{chkX, chkY}]->treemap->updateTile(i, t2);
+					sceKernelDcacheWritebackInvalidateAll();
+					chunkMap[{chkX, chkY}]->treemap->buildMap();
+					return;
+				}
+				}
+			}
 		}
 	}
 }

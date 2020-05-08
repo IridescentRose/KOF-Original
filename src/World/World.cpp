@@ -345,7 +345,7 @@ void World::animUpdate()
 	countS++;
 
 	if (countS % 3 == 0) {
-		g_GameTime.totalTime += 20;
+		g_GameTime.totalTime += 2;
 		g_GameTime.dayTime = g_GameTime.totalTime % 24001;
 		g_GameTime.days = g_GameTime.totalTime / 24000;
 

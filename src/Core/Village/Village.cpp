@@ -7,12 +7,17 @@ Village::Village(int x, int y)
 
 void Village::update()
 {
-	//NPC MANAGER
+	for (auto npc : npcs) {
+		npc->simpleAITick();
+		npc->update();
+	}
 }
 
 void Village::draw()
 {
-	//NPC MANAGER
+	for (auto npc : npcs) {
+		npc->draw();
+	}
 }
 
 void Village::dayTrigger()
@@ -47,6 +52,8 @@ void Village::initialSpawn()
 			}
 		}
 	}
+
+	npcs.push_back(new NPCBase(spawnLocation * 32.0f - glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/settler.png", "settler"));
 }
 
 Village* g_Village = NULL;

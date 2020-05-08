@@ -2,6 +2,7 @@
 #include <Utilities/Input.h>
 #include "../RAM.h"
 
+
 World::World()
 {
 	charTexture = TextureUtil::LoadPng("./assets/game/mc.png");
@@ -97,7 +98,8 @@ World::World()
 
 
 	currLevel = 10;
-	charSprite->setColor(GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f));
+	g_GameTime.lightLevel = currLevel;
+	charSprite->setColor(GU_COLOR((float)g_GameTime.lightLevel / 16.0f, (float)g_GameTime.lightLevel / 16.0f, (float)g_GameTime.lightLevel / 16.0f, 1.0f));
 }
 
 World::~World()
@@ -111,6 +113,10 @@ void World::update()
 	chunkgenUpdate();
 	animUpdate();
 	playerUpdate();
+
+	if (g_Village != NULL) {
+		g_Village->update();
+	}
 }
 
 void World::draw()
@@ -122,8 +128,13 @@ void World::draw()
 	}
 	
 	drops->draw();
+
+	if (g_Village != NULL) {
+		g_Village->draw();
+	}
+
 	controller->draw();
-	
+
 	g_RenderCore.Set2DMode();
 	
 	//UI
@@ -352,7 +363,9 @@ void World::animUpdate()
 		if (g_GameTime.days != currDay) {
 			currDay = g_GameTime.days;
 
-			//TODO: DAY PASS HANDLER
+			if (g_Village != NULL) {
+				g_Village->dayTrigger();
+			}
 		}
 	}
 
@@ -471,6 +484,21 @@ void World::chunkgenUpdate()
 
 void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 {
+	if(g_Village != NULL){
+		for (auto npc : g_Village->getNPCs()) {
+			glm::vec2 pos = npc->getPosition();
+			glm::vec2 playerPos = controller->getCharacterSprite()->getPosition();
+
+			if (((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16 * 16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16)) {
+				//INTERACT
+				dial->addDialog(npc->getDialog());
+				return;
+			}
+
+
+		}
+	}
+
 	if ((g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID || g_Inventory->getItem(hotbarPosition).ID == Items::APPLE.ID) && player.energy > 5) {
 		if (player.hunger < 20.5f) {
 			player.hunger += 5;

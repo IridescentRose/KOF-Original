@@ -37,6 +37,9 @@ public:
 
 	TileAnim* getTile(int x, int y);
 	void setTile(int x, int y, TileAnim* t);
+
+
+	std::map<Vector3i, Chunk*> chunkMap;
 private:
 	Texture* charTexture;
 	TextureAtlas* atlas;
@@ -44,7 +47,6 @@ private:
 	Render2D::TopDownController* controller;
 	DropManager* drops;
 	HUD* hud;
-	std::map<Vector3i, Chunk*> chunkMap;
 	UIText* debugRAM;
 	int hotbarPosition;
 	glm::ivec2 lastPos;

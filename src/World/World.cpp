@@ -435,10 +435,169 @@ void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmoun
 			drp->itm = Items::STONES;
 			drp->quantity = 1 + rand() % 4;
 			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
-
-			progInfo.canCompleteMiner = true;
-
 			drops->addDrop(drp);
+			return;
+		}
+
+		if (hitTile->texIndex == 16 || hitTile->texIndex == 17 || hitTile->texIndex == 32 || hitTile->texIndex == 33) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
+			(*removeAmount) = 2;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(1);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::SEEDS;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+		}
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_SHOVEL.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 2;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::SEEDS;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+			return;
+		}
+
+		if (hitTile->texIndex == 2 && g_Inventory->getItem(hotbarPosition).ID == Items::SEEDS.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+			return;
+		}
+
+		if (hitTile->texIndex == 2 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 22;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			return;
+		}
+
+		if (hitTile->texIndex == 22 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 2;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			return;
+		}
+
+		if (hitTile->texIndex == 22 && g_Inventory->getItem(hotbarPosition).ID == Items::SEEDS.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 23;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			return;
+		}
+
+		if (hitTile->texIndex >= 23 && hitTile->texIndex <= 25 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 22;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::SEEDS;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+			return;
 		}
 	}
 }

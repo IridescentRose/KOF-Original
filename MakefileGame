@@ -12,6 +12,7 @@ src/Core/Item.o \
 src/Core/Combat/CombatText.o \
 src/Core/Dialogue.o \
 src/Core/NPCTutorial/NumptyTutorial.o \
+src/Core/Village/Village.o \
 src/States/MainState.o \
 src/World/Chunk.o \
 src/World/World.o \

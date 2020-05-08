@@ -89,9 +89,9 @@ World::World()
 
 
 	dial = new DialogStack(dialog);
-	dial->addDialog(d);
-	dial->addDialog(d2);
-	dial->addDialog(d3);
+	//dial->addDialog(d);
+	//dial->addDialog(d2);
+	//dial->addDialog(d3);
 	prevEngage = false;
 	txt = new CombatText();
 
@@ -582,9 +582,6 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 42;
-			t->isAnim = true;
-			t->indexStart = 42;
-			t->animLength = 3;
 			setTile(x, y, t);
 
 			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
@@ -594,7 +591,8 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 				slt->item = Items::NONE;
 			}
 
-			//TODO: CREATE VILLAGE
+			g_Village = new Village(x, y);
+			g_Village->initialSpawn();
 
 			return;
 		}
@@ -766,7 +764,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 				glm::vec2 playerPos = (tmap->getTile(i)->offset + tmap->getTile(i)->extent / 2.0f) / 2.0f;
 				playerPos.y += 136;
 
-				bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16 * 16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16);
+				bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (20 * 20) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (20 * 20);
 				Utilities::app_Logger->log("TREE " + std::to_string(playerPos.x) + " " + std::to_string(playerPos.y));
 				Utilities::app_Logger->log("PLAYER " + std::to_string(pos.x) + " " + std::to_string(pos.x));
 				Utilities::app_Logger->log("IN RANGE " + std::to_string(isInRange));

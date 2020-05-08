@@ -6,6 +6,7 @@
 #include "../States/Tutorial.h"
 #include <Utilities/Timer.h>
 #include "Vector3.h"
+#include "../Core/Village/Village.h"
 
 using namespace Stardust::Graphics;
 

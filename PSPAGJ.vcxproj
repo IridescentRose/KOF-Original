@@ -103,6 +103,7 @@
     <ClCompile Include="src\Core\NPCTutorial\NumptyTutorial.cpp" />
     <ClCompile Include="src\Core\PauseHandler.cpp" />
     <ClCompile Include="src\Core\UI.cpp" />
+    <ClCompile Include="src\Core\Village\Village.cpp" />
     <ClCompile Include="src\GameDialog.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\States\Intro.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="src\Core\NPCTutorial\NumptyTutorial.h" />
     <ClInclude Include="src\Core\PauseHandler.h" />
     <ClInclude Include="src\Core\UI.h" />
+    <ClInclude Include="src\Core\Village\Village.h" />
     <ClInclude Include="src\GameDialog.h" />
     <ClInclude Include="src\States\Intro.h" />
     <ClInclude Include="src\States\Menu.h" />

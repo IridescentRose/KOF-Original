@@ -393,6 +393,12 @@ void World::animUpdate()
 		charSprite->setColor(GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f));
 	}
 
+	if (g_GameTime.totalTime % 4000 == 0 && countS % 3 == 0) {
+		for (auto [key, chk] : chunkMap) {
+			chk->updateTiles();
+		}
+	}
+
 	g_GameTime.lightLevel = currLevel;
 }
 
@@ -566,6 +572,30 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			if (slt->quantity == 0) {
 				slt->item = Items::NONE;
 			}
+			return;
+		}
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::VILLAGESPAWN.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 42;
+			t->isAnim = true;
+			t->indexStart = 42;
+			t->animLength = 3;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+			//TODO: CREATE VILLAGE
+
 			return;
 		}
 

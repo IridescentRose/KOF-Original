@@ -170,6 +170,35 @@ void Chunk::setLighting(int level)
 
 void Chunk::updateTiles()
 {
+	for (int i = 0; i < tmap->size(); i++) {
+		auto t = tmap->getTile(i);
+
+		if (t->texIndex >= 23 && t->texIndex <= 25) {
+			t->texIndex++;
+			continue;
+		}
+
+		if (t->texIndex >= 38 && t->texIndex <= 41) {
+			t->texIndex = 0;
+			t->isAnim = false;
+			
+			TileAnim* t2 = new TileAnim();
+			t2->isAnim = true;
+			t2->indexStart = 0;
+			t2->animLength = 3;
+			t2->tickNumber = rand() % 5;
+			t2->rgba = 0xFFFFFFFF;
+			t2->layer = 0;
+			t2->rotation = 0;
+			t2->physics = true;
+			t2->offset = t->offset - glm::vec2(32, 32);
+			t2->extent = { 64, 64 };
+
+			treemap->addTile(t2);
+		}
+	}
+	tmap->buildMap();
+	treemap->buildMap();
 }
 
 Texture* terrain_atlas = NULL;

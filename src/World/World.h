@@ -35,6 +35,8 @@ public:
 	void update();
 	void draw();
 
+	void respawn();
+
 	TileAnim* getTile(int x, int y);
 	void setTile(int x, int y, TileAnim* t);
 
@@ -56,6 +58,8 @@ private:
 	CombatText* txt;
 	int currDay;
 	int currLevel;
+
+	glm::vec2 playerRespawnPos;
 
 	void playerUpdate();
 	void animUpdate();

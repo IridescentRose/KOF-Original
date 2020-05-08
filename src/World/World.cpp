@@ -52,8 +52,6 @@ World::World()
 	g_Inventory->getItemSlot(1)->quantity = 1;
 	g_Inventory->getItemSlot(2)->item = Items::IRON_AXE;
 	g_Inventory->getItemSlot(2)->quantity = 1;
-	g_Inventory->getItemSlot(3)->item = Items::IRON_SHOVEL;
-	g_Inventory->getItemSlot(3)->quantity = 1;
 	g_Inventory->getItemSlot(4)->item = Items::IRON_HOE;
 	g_Inventory->getItemSlot(4)->quantity = 1;
 	g_Inventory->getItemSlot(5)->item = Items::BREAD;
@@ -64,8 +62,8 @@ World::World()
 	g_Inventory->tryAddItem(Items::VILLAGESPAWN);
 
 	player.energy = 10;
-	player.health = 20.5f;
-	player.hunger = 20.5f;
+	player.health = 10.0f;
+	player.hunger = 0.5f;
 
 	hud = new HUD();
 	drops = new DropManager();
@@ -100,6 +98,8 @@ World::World()
 	currLevel = 10;
 	g_GameTime.lightLevel = currLevel;
 	charSprite->setColor(GU_COLOR((float)g_GameTime.lightLevel / 16.0f, (float)g_GameTime.lightLevel / 16.0f, (float)g_GameTime.lightLevel / 16.0f, 1.0f));
+
+	playerRespawnPos = charSprite->getPosition() * 2.0f;
 }
 
 World::~World()
@@ -217,7 +217,7 @@ void World::playerUpdate()
 	}
 
 	if (player.health <= 0) {
-		die();
+		die2();
 	}
 
 
@@ -482,12 +482,27 @@ void World::chunkgenUpdate()
 
 }
 
+void World::respawn()
+{
+	player.health = 20;
+	player.energy = 10;
+	player.hunger = 20;
+	player.gold = 0;
+
+	controller->setPosition(playerRespawnPos);
+
+}
+
 void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 {
 	if(g_Village != NULL){
 		for (auto npc : g_Village->getNPCs()) {
-			glm::vec2 pos = npc->getPosition();
+			glm::vec2 pos = npc->getPosition() / 2.0f;
 			glm::vec2 playerPos = controller->getCharacterSprite()->getPosition();
+
+			Utilities::app_Logger->log("PLAYER " + std::to_string(playerPos.x) + " " + std::to_string(playerPos.y));
+			Utilities::app_Logger->log("NPC " + std::to_string(pos.x) + " " + std::to_string(pos.x));
+
 
 			if (((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16 * 16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16)) {
 				//INTERACT
@@ -621,6 +636,8 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 
 			g_Village = new Village(x, y);
 			g_Village->initialSpawn();
+
+			playerRespawnPos = charSprite->getPosition() * 2.0f;
 
 			return;
 		}
@@ -793,10 +810,6 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 				playerPos.y += 136;
 
 				bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (20 * 20) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (20 * 20);
-				Utilities::app_Logger->log("TREE " + std::to_string(playerPos.x) + " " + std::to_string(playerPos.y));
-				Utilities::app_Logger->log("PLAYER " + std::to_string(pos.x) + " " + std::to_string(pos.x));
-				Utilities::app_Logger->log("IN RANGE " + std::to_string(isInRange));
-
 				if (isInRange && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 5) {
 
 

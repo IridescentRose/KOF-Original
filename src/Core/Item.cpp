@@ -24,11 +24,14 @@ Item Items::COBBLESTONE = { 18, false, false, 0 };
 Item Items::ACORN = { 19, false, false, 0 };
 Item Items::SEEDS = { 20, false, false, 0 };
 Item Items::VILLAGESPAWN = { 21, false, false, 0 };
+Item Items::WORKBENCH = { 22, false, false, 0 };
+Item Items::CHEST = { 23, false, false, 0 };
+Item Items::BED = { 24, false, false, 0 };
 
 ItemSprites::ItemSprites()
 {
 	items = TextureUtil::LoadPng("./assets/game/items.png");
-	for (int i = 0; i < 22; i++) {
+	for (int i = 0; i < 25; i++) {
 		int x = i % 8;
 		int y = i / 8;
 		arr[i] = new Sprite(items, x * 16, y * 16, 16, 16, true);
@@ -38,7 +41,7 @@ ItemSprites::ItemSprites()
 
 Sprite* ItemSprites::getSprite(int idx)
 {
-	if (idx < 22) {
+	if (idx < 25) {
 		return arr[idx];
 	}
 	return NULL;

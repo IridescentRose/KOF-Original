@@ -8,5 +8,6 @@ using namespace Stardust::Graphics;
 void pauseHandler();
 
 void die();
+void die2();
 
 void endTutorial();

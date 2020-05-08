@@ -1,4 +1,5 @@
 #include "Village.h"
+#include "NPCS/NPCSettler.h"
 
 Village::Village(int x, int y)
 {
@@ -53,7 +54,7 @@ void Village::initialSpawn()
 		}
 	}
 
-	npcs.push_back(new NPCBase(spawnLocation * 32.0f - glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/settler.png", "settler"));
+	npcs.push_back(new NPCSettler(spawnLocation * 32.0f - glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/settler.png", "settler"));
 }
 
 Village* g_Village = NULL;

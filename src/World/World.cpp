@@ -41,7 +41,23 @@ World::World()
 	Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
 
 	controller->getAnimController()->setCharacterTickRateRelative(24);
-	controller->setPosition({ 0, 0 });
+	controller->setPosition({ 48 + 50 * 16 * 32, 48 + 50 * 16 * 32 });
+
+
+	g_Inventory->getItemSlot(0)->item = Items::IRON_SWORD;
+	g_Inventory->getItemSlot(0)->quantity = 1;
+	g_Inventory->getItemSlot(1)->item = Items::IRON_PICKAXE;
+	g_Inventory->getItemSlot(1)->quantity = 1;
+	g_Inventory->getItemSlot(2)->item = Items::IRON_AXE;
+	g_Inventory->getItemSlot(2)->quantity = 1;
+	g_Inventory->getItemSlot(3)->item = Items::IRON_SHOVEL;
+	g_Inventory->getItemSlot(3)->quantity = 1;
+	g_Inventory->getItemSlot(4)->item = Items::IRON_HOE;
+	g_Inventory->getItemSlot(4)->quantity = 1;
+	g_Inventory->getItemSlot(5)->item = Items::BREAD;
+	g_Inventory->getItemSlot(5)->quantity = 5;
+
+
 
 	player.energy = 10;
 	player.health = 20.5f;
@@ -98,6 +114,59 @@ void World::draw()
 	u32 ramFree = freeMemory();
 	debugRAM->setContent("RAM: " + std::to_string(ramFree));
 	debugRAM->draw();
+}
+
+TileAnim* World::getTile(int x, int y)
+{
+	int chkX = x / 16;
+	int chkY = y / 16;
+
+	if (chunkMap.find({ chkX, chkY }) != chunkMap.end()) {
+
+		int rX = x % 16;
+		int rY = y % 16;
+
+		if (x < 0) {
+			rX = -rX;
+		}
+		if (y < 0) {
+			rY = -rY;
+		}
+
+		Utilities::app_Logger->log("CHK: " + std::to_string(chkX) + " " + std::to_string(chkY));
+		Utilities::app_Logger->log("COORD: " + std::to_string(rX) + " " + std::to_string(rY));
+
+		return chunkMap[{chkX, chkY}]->tmap->getTile(rX + rY * 16);
+	}
+
+	return NULL;
+}
+
+void World::setTile(int x, int y, TileAnim* t)
+{
+	int chkX = x / 16;
+	int chkY = y / 16;
+
+	if (chunkMap.find({ chkX, chkY }) != chunkMap.end()) {
+
+		int rX = x % 16;
+		int rY = y % 16;
+
+		if (x < 0) {
+			rX += 16;
+		}
+		if (y < 0) {
+			rY += 16;
+		}
+
+		TileAnim* t2 = getTile(x, y);
+		t->offset = t2->offset;
+		t->extent = t2->extent;
+
+		chunkMap[{chkX, chkY}]->tmap->updateTile(rX + rY * 16, t);
+		chunkMap[{chkX, chkY}]->tmap->buildMap();
+	}
+
 }
 
 void World::playerUpdate()
@@ -180,19 +249,19 @@ void World::playerUpdate()
 
 				switch (controller->getCharacterSprite()->getFacing()) {
 				case CHARACTER_FACING_DOWN: {
-					pos.y += 20;
+					pos.y += 16;
 					break;
 				}
 				case CHARACTER_FACING_UP: {
-					pos.y -= 20;
+					pos.y -= 16;
 					break;
 				}
 				case CHARACTER_FACING_LEFT: {
-					pos.x -= 20;
+					pos.x -= 16;
 					break;
 				}
 				case CHARACTER_FACING_RIGHT: {
-					pos.x += 20;
+					pos.x += 16;
 					break;
 				}
 				}
@@ -200,16 +269,7 @@ void World::playerUpdate()
 				int x = ((int)pos.x) / 16;
 				int y = ((int)pos.y) / 16;
 
-				if ((g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID || g_Inventory->getItem(hotbarPosition).ID == Items::APPLE.ID) && player.energy > 5) {
-					if (player.hunger < 20.5f) {
-						player.hunger += 5;
-						player.health += 2;
-					}
-					g_Inventory->getItemSlot(hotbarPosition)->quantity--;
-					if (g_Inventory->getItemSlot(hotbarPosition)->quantity == 0) {
-						g_Inventory->getItemSlot(hotbarPosition)->item = Items::NONE;
-					}
-				}
+				leftClickInteract(x, y, pos, &removeAmount);
 
 			}
 		}
@@ -272,8 +332,8 @@ void World::chunkgenUpdate()
 
 	if (v != lastPos) {
 		//WORLD MANAGEMENT
-		glm::vec2 topLeft = { v.x - 2, v.y - 2 };
-		glm::vec2 botRight = { v.x + 2, v.y + 2 };
+		glm::vec2 topLeft = { v.x-2, v.y-2};
+		glm::vec2 botRight = { v.x+1, v.y+1};
 
 		std::vector <Vector3i> needed;
 		needed.clear();
@@ -330,6 +390,57 @@ void World::chunkgenUpdate()
 	}
 
 
+}
+
+void World::leftClickInteract(int x, int y, glm::vec2 position, int* removeAmount)
+{
+	if ((g_Inventory->getItem(hotbarPosition).ID == Items::BREAD.ID || g_Inventory->getItem(hotbarPosition).ID == Items::APPLE.ID) && player.energy > 5) {
+		if (player.hunger < 20.5f) {
+			player.hunger += 5;
+			player.health += 2;
+		}
+		g_Inventory->getItemSlot(hotbarPosition)->quantity--;
+		if (g_Inventory->getItemSlot(hotbarPosition)->quantity == 0) {
+			g_Inventory->getItemSlot(hotbarPosition)->item = Items::NONE;
+		}
+		return;
+	}
+
+	Tile* hitTile = getTile(x, y);
+
+	if (hitTile != NULL) {
+
+		Utilities::app_Logger->log("TILE HIT: " + std::to_string(x) + " " + std::to_string(y));
+		Utilities::app_Logger->log("PLAYER: " + std::to_string(charSprite->getPosition().x) + " " + std::to_string(charSprite->getPosition().y));
+		Utilities::app_Logger->log("TILE: " + std::to_string(hitTile->texIndex));
+
+		if (hitTile->texIndex == 27 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_PICKAXE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = 0xFFFFFFFF;
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::STONES;
+			drp->quantity = 1 + rand() % 4;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+
+			progInfo.canCompleteMiner = true;
+
+			drops->addDrop(drp);
+		}
+	}
 }
 
 World* g_World = NULL;

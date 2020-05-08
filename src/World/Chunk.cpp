@@ -42,7 +42,7 @@ void Chunk::generate()
 			t->offset = { x * 32 + (positionXY.x * 16 * 32) , y * 32 + (positionXY.y * 16 * 32) - 272 };
 			t->extent = { 32, 32 };
 
-			bool spawnpoint = (positionXY == glm::vec2(0, 0)) && glm::vec2(x * 32 + positionXY.x * 16 * 32, y * 32 + positionXY.y * 16 * 32) == glm::vec2(0, 0);
+			bool spawnpoint = (positionXY == glm::vec2(50, 50)) && x <3 && y < 3;
 
 			if(!spawnpoint){
 			if (sample > 0.72f * 2.0f) {
@@ -60,6 +60,22 @@ void Chunk::generate()
 					t->indexStart = 16;
 					t->tickNumber = rand() % 3;
 					t->animLength = 1;
+				}
+			}
+
+
+
+			if (sample > 0.5f * 2.0f && sample < 0.57f * 2.0f) {
+				srand(-x + positionXY.x * 16 * (-y + positionXY.y * 16));
+
+				if (rand() % 5 == 0) {
+
+					t->texIndex = 16 + 16;
+					t->isAnim = true;
+					t->indexStart = 16 + 16;
+					t->tickNumber = rand() % 3;
+					t->animLength = 1;
+					t->physics = false;
 				}
 			}
 
@@ -89,8 +105,7 @@ void Chunk::generate()
 			tmap->addTile(t);
 
 			if (t->texIndex == 0 && !t->isAnim) {
-				srand(x + positionXY.x * 16 * (y + positionXY.y * 16) * (y + positionXY.y * 16));
-				if (rand() % 20 == 0 && !spawnpoint) {
+				if (rand()*x*y % 40 == 0&& !spawnpoint) {
 					TileAnim* t2 = new TileAnim();
 					t2->isAnim = true;
 					t2->indexStart = 0;

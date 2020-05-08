@@ -30,7 +30,7 @@ void CombatText::draw()
 	if(map != NULL){
 		txt->setContent(map->text);
 		txt->setPosition(map->pos);
-		txt->setOptions({ 0.5f, map->color, INTRAFONT_ALIGN_CENTER });
+		txt->setOptions({ 0.5f, (unsigned int)map->color, INTRAFONT_ALIGN_CENTER });
 
 		txt->draw();
 	}

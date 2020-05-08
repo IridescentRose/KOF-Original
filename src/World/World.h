@@ -17,6 +17,8 @@ public:
 	void update();
 	void draw();
 
+	TileAnim* getTile(int x, int y);
+	void setTile(int x, int y, TileAnim* t);
 private:
 	Texture* charTexture;
 	TextureAtlas* atlas;
@@ -36,6 +38,7 @@ private:
 	void playerUpdate();
 	void animUpdate();
 	void chunkgenUpdate();
+	void leftClickInteract(int x, int y, glm::vec2 position, int* removeAmount);
 };
 
 extern World* g_World;

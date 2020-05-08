@@ -152,6 +152,26 @@ void Chunk::draw()
 	sceGumPopMatrix();
 }
 
+void Chunk::setLighting(int level)
+{
+	for (int i = 0; i < tmap->size(); i++) {
+		auto tile = tmap->getTile(i);
+		tile->rgba = GU_COLOR((float)level / 16.0f, (float)level / 16.0f, (float)level / 16.0f, 1.0f);
+	}
+	for (int i = 0; i < treemap->size(); i++) {
+		auto tile = treemap->getTile(i);
+		tile->rgba = GU_COLOR((float)level / 16.0f, (float)level / 16.0f, (float)level / 16.0f, 1.0f);
+	}
+	tmap->buildMap();
+	treemap->buildMap();
+
+	lightLevel = level;
+}
+
+void Chunk::updateTiles()
+{
+}
+
 Texture* terrain_atlas = NULL;
 Texture* treez = NULL;
 siv::PerlinNoise* noise = NULL;

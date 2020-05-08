@@ -9,7 +9,15 @@ using namespace Stardust::Graphics::Render2D;
 using namespace Stardust::Graphics;
 using namespace Stardust::Graphics::UI;
 
-struct ItemSlot {
+
+class Item;
+class Items;
+class ItemSprites;
+class ItemDrop;
+class DropManager;
+
+class ItemSlot {
+public:
 	Item item;
 	char quantity;
 };
@@ -27,13 +35,9 @@ public:
 	bool tryAddItem(Item itm);
 	int findItem(Item itm);
 
-	inline Item getItem(int slot) {
-		return slots[slot].item;
-	}
+	Item getItem(int slot);
 
-	inline ItemSlot* getItemSlot(int slot) {
-		return &slots[slot];
-	}
+	ItemSlot* getItemSlot(int slot);
 
 	bool isEngaged();
 

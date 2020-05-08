@@ -9,6 +9,23 @@
 
 using namespace Stardust::Graphics;
 
+struct GameTime {
+	u32 dayTime;
+	u32 totalTime;
+
+	u32 days;
+	u8 lightLevel;
+};
+
+class Item;
+class Items;
+class ItemSprites;
+class ItemDrop;
+class DropManager;
+class Dialogue;
+class DialogStack;
+class CombatText;
+
 class World {
 public:
 	World();
@@ -34,6 +51,8 @@ private:
 	DialogStack* dial;
 	bool prevEngage;
 	CombatText* txt;
+	int currDay;
+	int currLevel;
 
 	void playerUpdate();
 	void animUpdate();
@@ -42,3 +61,4 @@ private:
 };
 
 extern World* g_World;
+extern GameTime g_GameTime;

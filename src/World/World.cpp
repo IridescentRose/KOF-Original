@@ -43,6 +43,7 @@ World::World()
 	controller->getAnimController()->setCharacterTickRateRelative(24);
 	controller->setPosition({ 48 + 50 * 16 * 32, 48 + 50 * 16 * 32 });
 
+#ifdef KOF_DEBUG
 
 	g_Inventory->getItemSlot(0)->item = Items::IRON_SWORD;
 	g_Inventory->getItemSlot(0)->quantity = 1;
@@ -57,7 +58,9 @@ World::World()
 	g_Inventory->getItemSlot(5)->item = Items::BREAD;
 	g_Inventory->getItemSlot(5)->quantity = 5;
 
+#endif
 
+	g_Inventory->tryAddItem(Items::VILLAGESPAWN);
 
 	player.energy = 10;
 	player.health = 20.5f;
@@ -72,10 +75,29 @@ World::World()
 	hotbarPosition = 0;
 
 	dialog = new Dialogue();
+	Dialog* d = new Dialog();
+	d->interactionType = INTERACTION_TYPE_NONE;
+	d->text = "Settler: Welcome to the wilderness, explorer!\nI know it's been a long journey, but we can finally begin\nto set up a village. I have placed a Village Indicator\nin your inventory. Please place it where you wish for\nthe village to begin. Be wise about your location!";
+
+	Dialog* d2 = new Dialog();
+	d2->interactionType = INTERACTION_TYPE_NONE;
+	d2->text = "Settler: I will join you again once you have made your\nchoice! Don't worry, I will teleport to your location.\nTo place the indicator, use the X button over grass. This\nwill set up a base camp to expand from.\nGood luck!";
+
+	Dialog* d3 = new Dialog();
+	d3->interactionType = INTERACTION_TYPE_NONE;
+	d3->text = "Tutorial: In the wilderness you are less confined\nthan the village. You can place blocks by using X in\nsuitable locations like on grass.\nDo be aware that the days will pass quickly!";
+
 
 	dial = new DialogStack(dialog);
+	dial->addDialog(d);
+	dial->addDialog(d2);
+	dial->addDialog(d3);
 	prevEngage = false;
 	txt = new CombatText();
+
+
+	currLevel = 10;
+	charSprite->setColor(GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f));
 }
 
 World::~World()
@@ -109,6 +131,7 @@ void World::draw()
 	g_Inventory->drawHotbar();
 	g_Inventory->draw();
 	txt->draw();
+	dialog->draw();
 
 	//DEBUG
 	u32 ramFree = freeMemory();
@@ -298,8 +321,7 @@ void World::playerUpdate()
 	}
 	prevEngage = dialog->isEngaged() || g_Inventory->isEngaged();
 
-	g_Inventory->update();
-
+	
 	txt->update();
 	controller->update(0.016f);
 
@@ -321,6 +343,57 @@ void World::animUpdate()
 		}
 	}
 	countS++;
+
+	if (countS % 3 == 0) {
+		g_GameTime.totalTime += 20;
+		g_GameTime.dayTime = g_GameTime.totalTime % 24001;
+		g_GameTime.days = g_GameTime.totalTime / 24000;
+
+		if (g_GameTime.days != currDay) {
+			currDay = g_GameTime.days;
+
+			//TODO: DAY PASS HANDLER
+		}
+	}
+
+	bool lightingUpdate = false;
+	//LIGHTING SYSTEM
+	if (g_GameTime.dayTime > 0 && g_GameTime.dayTime <= 3000) {
+		int newLevel = 10 + g_GameTime.dayTime / 500;
+		if (newLevel != currLevel) {
+			currLevel = newLevel;
+			lightingUpdate = true;
+		}
+	}
+	else if (g_GameTime.dayTime > 3000 && g_GameTime.dayTime <= 9000) {
+		currLevel = 16;
+	}
+	else if (g_GameTime.dayTime > 9000 && g_GameTime.dayTime <= 14000) {
+		int newLevel = 16 - (g_GameTime.dayTime - 9000) / 500;
+		if (newLevel != currLevel) {
+			currLevel = newLevel;
+			lightingUpdate = true;
+		}
+	}
+	else if (g_GameTime.dayTime > 14000 && g_GameTime.dayTime < 22000) {
+		currLevel = 6;
+	}
+	else if (g_GameTime.dayTime > 22000 && g_GameTime.dayTime <= 24000) {
+		int newLevel = 6 + (g_GameTime.dayTime - 22000) / 500;
+		if (newLevel != currLevel) {
+			currLevel = newLevel;
+			lightingUpdate = true;
+		}
+	}
+
+	if (lightingUpdate) {
+		for (auto [key, chk] : chunkMap) {
+			chk->setLighting(currLevel);
+		}
+		charSprite->setColor(GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f));
+	}
+
+	g_GameTime.lightLevel = currLevel;
 }
 
 void World::chunkgenUpdate()
@@ -370,6 +443,7 @@ void World::chunkgenUpdate()
 				Chunk* chunk = new Chunk(chk.x, chk.y);
 				chunk->generate();
 				chunk->saveGenerate();
+				chunk->setLighting(currLevel);
 
 				chunkMap.emplace(chk, std::move(chunk));
 			}
@@ -411,7 +485,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 27 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_PICKAXE.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 0;
@@ -436,7 +510,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 16 || hitTile->texIndex == 17 || hitTile->texIndex == 32 || hitTile->texIndex == 33) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 0;
@@ -452,7 +526,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_SHOVEL.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 2;
@@ -477,7 +551,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::ACORN.ID && player.energy > 1) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 38;
@@ -498,7 +572,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 2 && g_Inventory->getItem(hotbarPosition).ID == Items::SEEDS.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 0;
@@ -518,7 +592,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 2 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 22;
@@ -538,7 +612,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 22 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 2;
@@ -558,7 +632,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 22 && g_Inventory->getItem(hotbarPosition).ID == Items::SEEDS.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 23;
@@ -576,7 +650,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if ((hitTile->texIndex == 0 || hitTile->texIndex == 29) && g_Inventory->getItem(hotbarPosition).ID == Items::LOGS.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = true;
 			t->texIndex = 31;
@@ -596,7 +670,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex == 31 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 0;
@@ -622,7 +696,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 		if (hitTile->texIndex >= 23 && hitTile->texIndex <= 25 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
-			t->rgba = 0xFFFFFFFF;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
 			t->rotation = 0;
 			t->physics = false;
 			t->texIndex = 22;
@@ -662,7 +736,7 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 				glm::vec2 playerPos = (tmap->getTile(i)->offset + tmap->getTile(i)->extent / 2.0f) / 2.0f;
 				playerPos.y += 136;
 
-				bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (40 * 40) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (40 * 40);
+				bool isInRange = ((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16 * 16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16);
 				Utilities::app_Logger->log("TREE " + std::to_string(playerPos.x) + " " + std::to_string(playerPos.y));
 				Utilities::app_Logger->log("PLAYER " + std::to_string(pos.x) + " " + std::to_string(pos.x));
 				Utilities::app_Logger->log("IN RANGE " + std::to_string(isInRange));
@@ -721,3 +795,4 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 }
 
 World* g_World = NULL;
+GameTime g_GameTime = { 0, 0, 0, 16 };

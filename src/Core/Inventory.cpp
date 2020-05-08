@@ -115,6 +115,14 @@ bool Inventory::isEngaged()
 	return engaged;
 }
 
+Item Inventory::getItem(int slot) {
+	return slots[slot].item;
+}
+
+ItemSlot* Inventory::getItemSlot(int slot) {
+	return &slots[slot];
+}
+
 void Inventory::update()
 {
 	if (engaged) {

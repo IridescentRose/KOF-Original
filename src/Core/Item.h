@@ -6,6 +6,13 @@ using namespace Stardust;
 using namespace Stardust::Graphics::Render2D;
 using namespace Stardust::Graphics;
 
+
+class Item;
+class Items;
+class ItemSprites;
+class ItemDrop;
+class DropManager;
+
 enum ItemSpecials {
 	ITEM_SPECIAL_SWORD,
 	ITEM_SPECIAL_PICKAXE,
@@ -45,6 +52,7 @@ public:
 	static Item COBBLESTONE;
 	static Item ACORN;
 	static Item SEEDS;
+	static Item VILLAGESPAWN;
 };
 
 class ItemSprites {
@@ -55,7 +63,7 @@ public:
 
 private:
 	Texture* items;
-	Sprite* arr[21];
+	Sprite* arr[22];
 };
 
 struct ItemDrop {

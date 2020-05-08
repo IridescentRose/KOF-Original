@@ -18,6 +18,7 @@
 
 using namespace Stardust::Graphics;
 
+class DropManager;
 struct PlayerInfo {
 	float health;
 	float hunger;

@@ -23,11 +23,12 @@ Item Items::WOOD = { 17, false, false, 0 };
 Item Items::COBBLESTONE = { 18, false, false, 0 };
 Item Items::ACORN = { 19, false, false, 0 };
 Item Items::SEEDS = { 20, false, false, 0 };
+Item Items::VILLAGESPAWN = { 21, false, false, 0 };
 
 ItemSprites::ItemSprites()
 {
 	items = TextureUtil::LoadPng("./assets/game/items.png");
-	for (int i = 0; i < 21; i++) {
+	for (int i = 0; i < 22; i++) {
 		int x = i % 8;
 		int y = i / 8;
 		arr[i] = new Sprite(items, x * 16, y * 16, 16, 16, true);
@@ -37,7 +38,7 @@ ItemSprites::ItemSprites()
 
 Sprite* ItemSprites::getSprite(int idx)
 {
-	if (idx < 21) {
+	if (idx < 22) {
 		return arr[idx];
 	}
 	return NULL;
@@ -90,6 +91,8 @@ void DropManager::update(glm::vec2 position)
 		
 }
 
+
+#include "../States/MainState.h"
 void DropManager::draw()
 {
 	for (auto a : drops) {
@@ -97,7 +100,9 @@ void DropManager::draw()
 			auto spr = g_Inventory->sprites->getSprite(a->itm.ID);
 
 			spr->SetPosition(a->pos.x, a->pos.y);
+			spr->RGB((float)g_GameTime.lightLevel / 16.0f * 255.0f, (float)g_GameTime.lightLevel / 16.0f * 255.0f, (float)g_GameTime.lightLevel / 16.0f * 255.0f);
 			spr->Draw();
+			spr->RGB(255, 255, 255);
 		}
 	}
 }

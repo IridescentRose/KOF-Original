@@ -21,8 +21,12 @@ public:
 	void update();
 	void draw();
 
+	void setLighting(int level);
+	void updateTiles();
+
 	TilemapAnim* tmap;
 	TilemapAnim* treemap;
+	int lightLevel;
 private:
 	glm::vec2 positionXY;
 	

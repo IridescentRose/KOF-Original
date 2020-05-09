@@ -90,6 +90,7 @@ void Chunk::generate()
 			if (sample < 0.29f * 2.0f) {
 				t->texIndex = 18 + 16;
 				t->isAnim = true;
+				t->physics = true;
 				t->indexStart = 18 + 16;
 				t->tickNumber = rand() % 5;
 				t->animLength = 3;

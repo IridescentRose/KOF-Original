@@ -1,32 +1,32 @@
 #include "Item.h"
 #include "Inventory.h"
 
-Item Items::NONE = { -1, false, false, 0 };
-Item Items::IRON_SWORD = { 0, false, true, ITEM_SPECIAL_SWORD };
-Item Items::IRON_PICKAXE = { 1, false, true, ITEM_SPECIAL_PICKAXE };
-Item Items::IRON_HOE = { 2, false, true, ITEM_SPECIAL_HOE };
-Item Items::IRON_AXE = { 3, false, true, ITEM_SPECIAL_AXE };
-Item Items::IRON_SHOVEL = { 4, false, true, ITEM_SPECIAL_SHOVEL };
-Item Items::WHEAT = { 5, false, false, 0 };
-Item Items::BREAD = { 6, false, false, 0 };
-Item Items::APPLE = { 7, false, false, 0 };
-Item Items::STONES = { 8, false, false, 0 };
-Item Items::COAL = { 9, false, false, 0 };
-Item Items::IRON_ORE = { 10, false, false, 0 };
-Item Items::GOLD_ORE = { 11, false, false, 0 };
-Item Items::RUBY_ORE = { 12, false, false, 0 };
-Item Items::AMETHYST_ORE = { 13, false, false, 0 };
-Item Items::DIAMOND_ORE = { 14, false, false, 0 };
-Item Items::GOLDEN_APPLE = { 15, false, false, 0 };
-Item Items::LOGS = { 16, false, false, 0 };
-Item Items::WOOD = { 17, false, false, 0 };
-Item Items::COBBLESTONE = { 18, false, false, 0 };
-Item Items::ACORN = { 19, false, false, 0 };
-Item Items::SEEDS = { 20, false, false, 0 };
-Item Items::VILLAGESPAWN = { 21, false, false, 0 };
-Item Items::WORKBENCH = { 22, false, false, 0 };
-Item Items::CHEST = { 23, false, false, 0 };
-Item Items::BED = { 24, false, false, 0 };
+Item Items::NONE = { -1, false, false, 0, "HEARTS" };
+Item Items::IRON_SWORD = { 0, false, true, ITEM_SPECIAL_SWORD, "SWORD" };
+Item Items::IRON_PICKAXE = { 1, false, true, ITEM_SPECIAL_PICKAXE, "PICKAXE" };
+Item Items::IRON_HOE = { 2, false, true, ITEM_SPECIAL_HOE, "HOE" };
+Item Items::IRON_AXE = { 3, false, true, ITEM_SPECIAL_AXE, "AXE" };
+Item Items::IRON_SHOVEL = { 4, false, true, ITEM_SPECIAL_SHOVEL, "SHOVEL" };
+Item Items::WHEAT = { 5, false, false, 0, "WHEAT"};
+Item Items::BREAD = { 6, false, false, 0, "BREAD" };
+Item Items::APPLE = { 7, false, false, 0, "APPLE" };
+Item Items::STONES = { 8, false, false, 0, "STONE"};
+Item Items::COAL = { 9, false, false, 0, "COAL" };
+Item Items::IRON_ORE = { 10, false, false, 0, "IRON" };
+Item Items::GOLD_ORE = { 11, false, false, 0, "GOLD" };
+Item Items::RUBY_ORE = { 12, false, false, 0, "RUBY" };
+Item Items::AMETHYST_ORE = { 13, false, false, 0, "AMETHYST" };
+Item Items::DIAMOND_ORE = { 14, false, false, 0, "DIAMOND"};
+Item Items::GOLDEN_APPLE = { 15, false, false, 0, "GOD APPLE" };
+Item Items::LOGS = { 16, false, false, 0, "LOGS"};
+Item Items::WOOD = { 17, false, false, 0, "WOOD" };
+Item Items::COBBLESTONE = { 18, false, false, 0, "COBBLE"};
+Item Items::ACORN = { 19, false, false, 0, "ACORN"};
+Item Items::SEEDS = { 20, false, false, 0, "SEEDS"};
+Item Items::VILLAGESPAWN = { 21, false, false, 0, "SPAWNER" };
+Item Items::WORKBENCH = { 22, false, false, 0, "WORKBENCH"};
+Item Items::CHEST = { 23, false, false, 0, "CHEST" };
+Item Items::BED = { 24, false, false, 0, "BED" };
 
 ItemSprites::ItemSprites()
 {

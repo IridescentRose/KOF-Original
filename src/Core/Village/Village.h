@@ -1,6 +1,7 @@
 #pragma once
 #include "NPCS/NPCBase.h"
 #include <glm/glm.hpp>
+#include "Village.h"
 #include "../../World/World.h"
 #include <vector>
 
@@ -19,8 +20,10 @@ public:
 		return npcs;
 	}
 
-private:
+	int farmlandTotal;
 	glm::vec2 spawnLocation;
+private:
+
 
 	std::vector<NPCBase*> npcs;
 };

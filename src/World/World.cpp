@@ -1,7 +1,7 @@
 #include "World.h"
 #include <Utilities/Input.h>
 #include "../RAM.h"
-
+#include "../Core/Village/NPCS/NPCSettler.h"
 
 World::World()
 {
@@ -57,13 +57,15 @@ World::World()
 	g_Inventory->getItemSlot(5)->item = Items::BREAD;
 	g_Inventory->getItemSlot(5)->quantity = 5;
 
+	g_Inventory->tryAddItem(Items::WORKBENCH);
+
 #endif
 
 	g_Inventory->tryAddItem(Items::VILLAGESPAWN);
 
 	player.energy = 10;
-	player.health = 10.0f;
-	player.hunger = 0.5f;
+	player.health = 20.5f;
+	player.hunger = 20.5f;
 
 	hud = new HUD();
 	drops = new DropManager();
@@ -642,6 +644,237 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			return;
 		}
 
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::WORKBENCH.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 43;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+
+			if (!guide.playerWorkBenchUse) {
+				guide.playerWorkBenchUse = true;
+				Dialog* d = new Dialog();
+				d->interactionType = INTERACTION_TYPE_NONE;
+				d->text = "Tutorial: This is a workbench. By interacting, you can\ncraft new blocks and items to help your village grow!";
+				dial->addDialog(d);
+			}
+
+			return;
+		}
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::WOOD.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = true;
+			t->texIndex = 4;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+		}
+
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::COBBLESTONE.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 1;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+		}
+
+		if (hitTile->texIndex == 4 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::WOOD;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+
+			(*removeAmount) = 5;
+			return;
+		}
+
+		if (hitTile->texIndex == 1 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_PICKAXE.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::COBBLESTONE;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+
+			(*removeAmount) = 5;
+			return;
+		}
+
+
+		if (hitTile->texIndex == 43 && g_Inventory->getItem(hotbarPosition).ID != Items::IRON_AXE.ID) {
+
+			Dialog* d = new Dialog();
+			d->interactionType = INTERACTION_TYPE_TRADE;
+			d->text = "What would you like to make?";
+			d->trades.clear();
+
+			Trade* t1 = new Trade();
+			t1->item1 = Items::LOGS;
+			t1->quantity1 = 1;
+			t1->item2 = Items::WOOD;
+			t1->quantity2 = 2;
+
+			Trade* t2 = new Trade();
+			t2->item1 = Items::LOGS;
+			t2->quantity1 = 4;
+			t2->item2 = Items::WORKBENCH;
+			t2->quantity2 = 1;
+
+			Trade* t3 = new Trade();
+			t3->item1 = Items::LOGS;
+			t3->quantity1 = 8;
+			t3->item2 = Items::CHEST;
+			t3->quantity2 = 1;
+
+			Trade* t4 = new Trade();
+			t4->item1 = Items::STONES;
+			t4->quantity1 = 4;
+			t4->item2 = Items::COBBLESTONE;
+			t4->quantity2 = 1;
+
+			d->trades.clear();
+			d->trades.push_back(t1);
+			d->trades.push_back(t2);
+			d->trades.push_back(t3);
+			d->trades.push_back(t4);
+			
+			dial->addDialog(d);
+
+			return;
+		}
+
+		if (hitTile->texIndex == 43 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_AXE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 0;
+			setTile(x, y, t);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::WORKBENCH;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+
+			return;
+		}
+
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::CHEST.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 9;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+
+			if (!guide.playerChestUse) {
+				guide.playerChestUse = true;
+				Dialog* d = new Dialog();
+				d->interactionType = INTERACTION_TYPE_NONE;
+				d->text = "Tutorial: This is a chest. By interacting, you can\nplace items inside to store them!";
+				dial->addDialog(d);
+			}
+
+			return;
+		}
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::BED.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 12;
+			setTile(x, y, t);
+
+			TileAnim* t2 = new TileAnim();
+			t2->layer = 0;
+			t2->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t2->rotation = 0;
+			t2->physics = false;
+			t2->texIndex = 13;
+			setTile(x+1, y, t2);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+			playerRespawnPos = charSprite->getPosition() * 2.0f;
+
+			if (!guide.playerHouseSetupComplete) {
+				Dialog* d = new Dialog();
+				d->interactionType = INTERACTION_TYPE_NONE;
+				d->text = "Tutorial: This is your bed. It is now your permanent\nspawn point! If you die, you will be brought back here!";
+				dial->addDialog(d);
+			}
+
+			guide.playerHouseSetupComplete = true;
+
+			return;
+		}
+
 		if (hitTile->texIndex == 2 && g_Inventory->getItem(hotbarPosition).ID == Items::SEEDS.ID && player.energy > 5) {
 			TileAnim* t = new TileAnim();
 			t->layer = 0;
@@ -699,6 +932,12 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			dt->pos = { 240, 136 };
 			txt->addText(dt);
 
+			if (g_Village != NULL) {
+				if ((g_Village->spawnLocation.x - x) * (g_Village->spawnLocation.x - x) < (20 * 20) && (g_Village->spawnLocation.y - y) * (g_Village->spawnLocation.y - y) < (20 * 20)) {
+					g_Village->farmlandTotal--;
+				}
+			}
+
 			return;
 		}
 
@@ -717,6 +956,14 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			if (slt->quantity == 0) {
 				slt->item = Items::NONE;
 			}
+
+			if (g_Village != NULL) {
+				if ((g_Village->spawnLocation.x - x) * (g_Village->spawnLocation.x - x) < (20 * 20) && (g_Village->spawnLocation.y - y) * (g_Village->spawnLocation.y - y) < (20 * 20)) {
+					g_Village->farmlandTotal++;
+					guide.playerFarmSetupComplete = true;
+				}
+			}
+
 			return;
 		}
 

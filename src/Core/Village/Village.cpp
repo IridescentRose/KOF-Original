@@ -4,6 +4,7 @@
 Village::Village(int x, int y)
 {
 	spawnLocation = { x, y };
+	farmlandTotal = 0;
 }
 
 void Village::update()
@@ -24,6 +25,7 @@ void Village::draw()
 void Village::dayTrigger()
 {
 	//TODO: HANDLE STUFF
+	guide.playerNextCharacter = true;
 }
 
 void Village::initialSpawn()

@@ -26,6 +26,7 @@ struct Item{
 	bool isPlaceable;
 	bool special;
 	char specialType;
+	std::string name;
 };
 
 class Items {

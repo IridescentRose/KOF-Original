@@ -1,6 +1,7 @@
 #pragma once
 #include <Graphics/2D/SpriteBase.h>
 #include "../GameDialog.h"
+#include "Item.h"
 
 using namespace Stardust;
 using namespace Stardust::Graphics;
@@ -13,10 +14,21 @@ enum InteractionType {
 	INTERACTION_TYPE_TRADE
 };
 
+struct Trade {
+	Item item1;
+	int quantity1;
+
+	Item item2;
+	int quantity2;
+};
+
 struct Dialog{
 	std::string text;
 	char interactionType;
+
+	std::vector<Trade*> trades;
 };
+
 
 class Dialogue {
 public:
@@ -35,8 +47,15 @@ public:
 
 private:
 	Sprite* dialogueBox, * arrowSelect;
+	Sprite* dialogueTrade;
 	Texture* dialog, * arrow;
 	bool display;
+	int selIndex;
+	int selPos;
+	int selFrame;
+	int exitIndex;
+
+	UI::UIText* tradeText;
 
 	GameDialog* main;
 	Dialog* info;

@@ -30,35 +30,35 @@ Dialog* NPCFarmer::getDialog()
 			d->interactionType = INTERACTION_TYPE_TRADE;
 			d->trades.clear();
 
-			//Trade* t1 = new Trade();
-			//t1->item1 = Items::SEEDS;
-			//t1->quantity1 = 1;
-			//t1->item2 = Items::WOOD;
-			//t1->quantity2 = 2;
-			//
-			//Trade* t2 = new Trade();
-			//t2->item1 = Items::LOGS;
-			//t2->quantity1 = 4;
-			//t2->item2 = Items::WORKBENCH;
-			//t2->quantity2 = 1;
-			//
-			//Trade* t3 = new Trade();
-			//t3->item1 = Items::LOGS;
-			//t3->quantity1 = 8;
-			//t3->item2 = Items::CHEST;
-			//t3->quantity2 = 1;
-			//
-			//Trade* t4 = new Trade();
-			//t4->item1 = Items::STONES;
-			//t4->quantity1 = 4;
-			//t4->item2 = Items::COBBLESTONE;
-			//t4->quantity2 = 1;
-			//
-			//d->trades.clear();
-			//d->trades.push_back(t1);
-			//d->trades.push_back(t2);
-			//d->trades.push_back(t3);
-			//d->trades.push_back(t4);
+			Trade* t1 = new Trade();
+			t1->item1 = Items::WHEAT;
+			t1->quantity1 = 1;
+			t1->item2 = Items::GOLD;
+			t1->quantity2 = 50;
+			
+			Trade* t2 = new Trade();
+			t2->item1 = Items::GOLD;
+			t2->quantity1 = 200;
+			t2->item2 = Items::BREAD;
+			t2->quantity2 = 1;
+			
+			Trade* t3 = new Trade();
+			t3->item1 = Items::NONE;
+			t3->quantity1 = 4;
+			t3->item2 = Items::IRON_HOE;
+			t3->quantity2 = 1;
+			
+			Trade* t4 = new Trade();
+			t4->item1 = Items::NONE;
+			t4->quantity1 = 2;
+			t4->item2 = Items::BREAD;
+			t4->quantity2 = 1;
+			
+			d->trades.clear();
+			d->trades.push_back(t1);
+			d->trades.push_back(t2);
+			d->trades.push_back(t3);
+			d->trades.push_back(t4);
 		}	
 	}
 

@@ -58,6 +58,7 @@ void Dialogue::hide()
 }
 
 #include "Inventory.h"
+#include "../World/World.h"
 void Dialogue::update()
 {
 	if (display) {
@@ -99,6 +100,41 @@ void Dialogue::update()
 								break;
 							}
 						}
+
+						if (info->trades[selPos]->item1.ID == Items::GOLD.ID) {
+							if (player.gold >= info->trades[selPos]->quantity1) {
+								//We have enough - let's trade and exit
+
+								bool canAdd = g_Inventory->tryAddItem(info->trades[selPos]->item2);
+								if (canAdd) {
+									player.gold -= info->trades[selPos]->quantity1;
+
+									for (int i = 0; i < info->trades[selPos]->quantity2 - 1; i++) {
+										g_Inventory->tryAddItem(info->trades[selPos]->item2);
+									}
+								}
+
+								break;
+							}
+						}
+
+						if (info->trades[selPos]->item1.ID == Items::NONE.ID) {
+							if (player.health >= info->trades[selPos]->quantity1) {
+								//We have enough - let's trade and exit
+
+								bool canAdd = g_Inventory->tryAddItem(info->trades[selPos]->item2);
+								if (canAdd) {
+									player.health -= info->trades[selPos]->quantity1;
+
+									for (int i = 0; i < info->trades[selPos]->quantity2 - 1; i++) {
+										g_Inventory->tryAddItem(info->trades[selPos]->item2);
+									}
+								}
+
+								break;
+							}
+						}
+
 					}
 
 				}

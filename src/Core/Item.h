@@ -57,6 +57,8 @@ public:
 	static Item WORKBENCH;
 	static Item CHEST;
 	static Item BED;
+	static Item FARMERTABLE;
+	static Item GOLD;
 };
 
 class ItemSprites {
@@ -67,7 +69,7 @@ public:
 
 private:
 	Texture* items;
-	Sprite* arr[25];
+	Sprite* arr[26];
 };
 
 struct ItemDrop {

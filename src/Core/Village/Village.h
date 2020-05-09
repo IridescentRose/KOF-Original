@@ -4,6 +4,7 @@
 #include "Village.h"
 #include "../../World/World.h"
 #include <vector>
+#include "NPCS/NPCFarmer.h"
 
 class Village {
 public:

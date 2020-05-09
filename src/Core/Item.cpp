@@ -27,11 +27,13 @@ Item Items::VILLAGESPAWN = { 21, false, false, 0, "SPAWNER" };
 Item Items::WORKBENCH = { 22, false, false, 0, "WORKBENCH"};
 Item Items::CHEST = { 23, false, false, 0, "CHEST" };
 Item Items::BED = { 24, false, false, 0, "BED" };
+Item Items::FARMERTABLE = { 25, false, false, 0, "FARMERTABLE" };
+Item Items::GOLD = { -2, false, false, 0, "GOLD" };
 
 ItemSprites::ItemSprites()
 {
 	items = TextureUtil::LoadPng("./assets/game/items.png");
-	for (int i = 0; i < 25; i++) {
+	for (int i = 0; i < 26; i++) {
 		int x = i % 8;
 		int y = i / 8;
 		arr[i] = new Sprite(items, x * 16, y * 16, 16, 16, true);
@@ -41,7 +43,7 @@ ItemSprites::ItemSprites()
 
 Sprite* ItemSprites::getSprite(int idx)
 {
-	if (idx < 25) {
+	if (idx < 26) {
 		return arr[idx];
 	}
 	return NULL;

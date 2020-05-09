@@ -52,12 +52,10 @@ World::World()
 	g_Inventory->getItemSlot(1)->quantity = 1;
 	g_Inventory->getItemSlot(2)->item = Items::IRON_AXE;
 	g_Inventory->getItemSlot(2)->quantity = 1;
-	g_Inventory->getItemSlot(4)->item = Items::IRON_HOE;
-	g_Inventory->getItemSlot(4)->quantity = 1;
-	g_Inventory->getItemSlot(5)->item = Items::BREAD;
-	g_Inventory->getItemSlot(5)->quantity = 5;
-
-	g_Inventory->tryAddItem(Items::WORKBENCH);
+	g_Inventory->getItemSlot(3)->item = Items::IRON_HOE;
+	g_Inventory->getItemSlot(3)->quantity = 1;
+	g_Inventory->getItemSlot(4)->item = Items::BREAD;
+	g_Inventory->getItemSlot(4)->quantity = 5;
 
 #endif
 
@@ -358,7 +356,7 @@ void World::animUpdate()
 	countS++;
 
 	if (countS % 3 == 0) {
-		g_GameTime.totalTime += 2;
+		g_GameTime.totalTime += 20;
 		g_GameTime.dayTime = g_GameTime.totalTime % 24001;
 		g_GameTime.days = g_GameTime.totalTime / 24000;
 
@@ -506,6 +504,13 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			Utilities::app_Logger->log("NPC " + std::to_string(pos.x) + " " + std::to_string(pos.x));
 
 
+			if (((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16 * 16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16)) {
+				//INTERACT
+				dial->addDialog(npc->getDialog());
+				return;
+			}
+
+			pos *= 2.0f;
 			if (((pos.x - playerPos.x) * (pos.x - playerPos.x)) < (16 * 16) && ((pos.y - playerPos.y) * (pos.y - playerPos.y)) < (16 * 16)) {
 				//INTERACT
 				dial->addDialog(npc->getDialog());
@@ -687,6 +692,28 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			if (slt->quantity == 0) {
 				slt->item = Items::NONE;
 			}
+
+		}
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::FARMERTABLE.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 44;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+			g_Village->getNPCs().back()->controller->setPosition(controller->getCharacterSprite()->getPosition() *= 2.0f);
+			g_Village->getNPCs().back()->movedIn = true;
+			
 
 		}
 

@@ -27,7 +27,6 @@ public:
 		return position;
 	}
 
-protected:
 	glm::vec2 position;
 	char radius;
 	glm::vec2 origin;

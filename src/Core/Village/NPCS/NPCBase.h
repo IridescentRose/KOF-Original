@@ -11,7 +11,7 @@ public:
 	void handleAction(char action);
 
 	Dialog* getDialog();
-
-private:
 	std::string tag;
+	bool movedIn;
+	bool met;
 };

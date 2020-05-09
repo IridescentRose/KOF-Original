@@ -57,7 +57,14 @@ void NPCBase::simpleAITick()
 		handleAction(nextAction);
 
 		ticksTilAction = rand() % 300;
-		nextAction = NPC_ACTION_LOOK;
+
+		if (tag != "settler" || movedIn) {
+
+			nextAction = NPC_ACTION_LOOK;
+		}
+		else {
+			nextAction = rand() % 2;
+		}
 	}
 }
 
@@ -69,7 +76,7 @@ void NPCBase::draw()
 
 void NPCBase::update()
 {
-	if(tag != "settler"){
+	if(tag != "settler" || movedIn){
 		if (ticksMovement > 0) {
 			controller->velocity = movement * 0.16f;
 		}

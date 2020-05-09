@@ -15,6 +15,7 @@ src/Core/NPCTutorial/NumptyTutorial.o \
 src/Core/Village/Village.o \
 src/Core/Village/NPCS/NPCBase.o \
 src/Core/Village/NPCS/NPCSettler.o \
+src/Core/Village/NPCS/NPCFarmer.o \
 src/States/MainState.o \
 src/World/Chunk.o \
 src/World/World.o \

@@ -130,7 +130,7 @@ Dialog* NumptyTutorial::getDialog()
 
 	if (tag == "settler") {
 		if (!progInfo.talkToSettler) {
-			d->text = "Hello old friend. It's certainly been a while, hasn't it?\nI know you want to get going on our journey... but look,\nYou don't have any tools to get started! Go visit the\nfarmer, guard, miner, and lumberjack.They should\nbe able to give you some tools!. Meet me again when ready!";
+			d->text = "Hello old friend. It's certainly been a while, hasn't it?\nI know you want to get going on our journey... but look,\nYou don't have any tools to get started! Go visit the\nfarmer, guard, miner, and lumberjack.They should\nbe able to give you some tools\nfor flesh!. Meet me again when ready!";
 			progInfo.talkToSettler = true;
 		}
 		else if(!(progInfo.completeFarmer && progInfo.completeGuard && progInfo.completeLumber && progInfo.completeMiner)){
@@ -176,8 +176,9 @@ Dialog* NumptyTutorial::getDialog()
 		}
 		else if (progInfo.canCompleteGuard && !progInfo.completeGuard) {
 			progInfo.completeGuard = true;
-			d->text = "Huh. Well as long as no harm is done and he goes away\nI'm alright with this. Either way, take the bounty!";
+			d->text = "Huh. Well as long as no harm is done and he goes away\nI'm alright with this. Either way, take the bounty!\nAnd I'll take a nice little bite :D";
 			player.gold += 250;
+			player.health -= 2;
 		}
 		else if (!progInfo.canCompleteGuard) {
 			d->text = "Have you found him yet? People are in danger!";
@@ -213,7 +214,7 @@ Dialog* NumptyTutorial::getDialog()
 		}
 		else if (progInfo.canCompleteLumber && !progInfo.completeLumber) {
 			progInfo.completeLumber = true;
-			d->text = "Hello, hello! Thank you for the wood!\nAs promised, take this apple!";
+			d->text = "Hello, hello! Thank you for the wood!\nAs promised, take this apple!\nAnd yes, I'll have some flesh too!";
 			g_Inventory->tryAddItem(Items::APPLE);
 			g_Inventory->tryAddItem(Items::APPLE);
 			g_Inventory->tryAddItem(Items::APPLE);
@@ -228,6 +229,7 @@ Dialog* NumptyTutorial::getDialog()
 			g_Inventory->tryAddItem(Items::APPLE);
 			g_Inventory->tryAddItem(Items::APPLE);
 
+			player.health -= 5;
 			player.gold += 50;
 		}
 		else if (!progInfo.canCompleteLumber) {

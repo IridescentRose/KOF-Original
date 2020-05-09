@@ -1070,7 +1070,37 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 			return;
 		}
 
+		if (hitTile->texIndex == 26 && g_Inventory->getItem(hotbarPosition).ID == Items::IRON_HOE.ID && player.energy > 5) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 22;
+			setTile(x, y, t);
 
+			(*removeAmount) = 5;
+			CombatTextDetails* dt = new CombatTextDetails();
+			dt->text = std::to_string(8 + rand() % 5);
+			dt->color = 0xFF0000FF;
+			dt->ticks = 20;
+			dt->pos = { 240, 136 };
+			txt->addText(dt);
+
+			ItemDrop* drp = new ItemDrop();
+			drp->itm = Items::SEEDS;
+			drp->quantity = 1;
+			drp->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp);
+
+			ItemDrop* drp2 = new ItemDrop();
+			drp2->itm = Items::WHEAT;
+			drp2->quantity = 1;
+			drp2->pos = { x * 32 + rand() % 10 , y * 32 + rand() % 10 };
+			drops->addDrop(drp2);
+
+			return;
+		}
 
 		//TREEZ
 

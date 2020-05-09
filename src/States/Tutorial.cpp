@@ -98,7 +98,7 @@ void TutorialState::init()
 	Utilities::addActionKeyPair("walkLeft", PSP_CTRL_LEFT);
 	Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
 
-	controller->getAnimController()->setCharacterTickRateRelative(24);
+	controller->getAnimController()->setCharacterTickRateRelative(12);
 	controller->addPhysicsTileMap(tmap);
 	controller->addPhysicsTileMap(treemap);
 	controller->setPosition({ 32 * 24, 32 * 27 });
@@ -536,7 +536,14 @@ void TutorialState::update(GameStateManager* st)
 
 void TutorialState::draw(GameStateManager* st)
 {
-	controller->draw();
+	//controller->draw();
+
+	sceGumMatrixMode(GU_VIEW);
+	sceGumLoadIdentity();
+	ScePspFVector3 v = { 240 - controller->getCharacterSprite()->getPosition().x * 2, 136 - controller->getCharacterSprite()->getPosition().y * 2, 0.0f };
+	sceGumTranslate(&v);
+	sceGumMatrixMode(GU_MODEL);
+
 	tmap->drawMap();
 	treemap->drawMap();
 
@@ -545,6 +552,7 @@ void TutorialState::draw(GameStateManager* st)
 	}
 
 	drops->draw();
+	sceKernelDcacheWritebackInvalidateAll();
 	controller->draw();
 	
 

@@ -41,7 +41,7 @@ World::World()
 	Utilities::addActionKeyPair("walkLeft", PSP_CTRL_LEFT);
 	Utilities::addActionKeyPair("walkRight", PSP_CTRL_RIGHT);
 
-	controller->getAnimController()->setCharacterTickRateRelative(24);
+	controller->getAnimController()->setCharacterTickRateRelative(12);
 	controller->setPosition({ 48 + 50 * 16 * 32, 48 + 50 * 16 * 32 });
 
 #ifdef KOF_DEBUG
@@ -88,9 +88,9 @@ World::World()
 
 
 	dial = new DialogStack(dialog);
-	//dial->addDialog(d);
-	//dial->addDialog(d2);
-	//dial->addDialog(d3);
+	dial->addDialog(d);
+	dial->addDialog(d2);
+	dial->addDialog(d3);
 	prevEngage = false;
 	txt = new CombatText();
 
@@ -121,7 +121,12 @@ void World::update()
 
 void World::draw()
 {
-	controller->draw();
+
+	sceGumMatrixMode(GU_VIEW);
+	sceGumLoadIdentity();
+	ScePspFVector3 v = { 240 - controller->getCharacterSprite()->getPosition().x * 2, 136 - controller->getCharacterSprite()->getPosition().y * 2, 0.0f };
+	sceGumTranslate(&v);
+	sceGumMatrixMode(GU_MODEL);
 	
 	for (auto [key, chk] : chunkMap) {
 		chk->draw();

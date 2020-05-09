@@ -361,7 +361,7 @@ void World::animUpdate()
 	countS++;
 
 	if (countS % 3 == 0) {
-		g_GameTime.totalTime += 20;
+		g_GameTime.totalTime += 2;
 		g_GameTime.dayTime = g_GameTime.totalTime % 24001;
 		g_GameTime.days = g_GameTime.totalTime / 24000;
 
@@ -718,7 +718,50 @@ void World::leftClickInteract(int x, int y, glm::vec2 pos, int* removeAmount)
 
 			g_Village->getNPCs().back()->controller->setPosition(controller->getCharacterSprite()->getPosition() *= 2.0f);
 			g_Village->getNPCs().back()->movedIn = true;
-			
+
+
+		}
+
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::MINERTABLE.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 45;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+			g_Village->getNPCs().back()->controller->setPosition(controller->getCharacterSprite()->getPosition() *= 2.0f);
+			g_Village->getNPCs().back()->movedIn = true;
+
+
+		}
+		if (hitTile->texIndex == 0 && g_Inventory->getItem(hotbarPosition).ID == Items::LUMBERTABLE.ID && player.energy > 1) {
+			TileAnim* t = new TileAnim();
+			t->layer = 0;
+			t->rgba = GU_COLOR((float)currLevel / 16.0f, (float)currLevel / 16.0f, (float)currLevel / 16.0f, 1.0f);
+			t->rotation = 0;
+			t->physics = false;
+			t->texIndex = 46;
+			setTile(x, y, t);
+
+			ItemSlot* slt = g_Inventory->getItemSlot(hotbarPosition);
+			slt->quantity--;
+
+			if (slt->quantity == 0) {
+				slt->item = Items::NONE;
+			}
+
+			g_Village->getNPCs().back()->controller->setPosition(controller->getCharacterSprite()->getPosition() *= 2.0f);
+			g_Village->getNPCs().back()->movedIn = true;
+
 
 		}
 

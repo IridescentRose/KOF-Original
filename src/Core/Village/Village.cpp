@@ -1,5 +1,8 @@
 #include "Village.h"
 #include "NPCS/NPCSettler.h"
+#include "NPCS/NPCFarmer.h"
+#include "NPCS/NPCMiner.h"
+#include "NPCS/NPCLumberJack.h"
 
 Village::Village(int x, int y)
 {
@@ -28,11 +31,21 @@ void Village::dayTrigger()
 		npcs.push_back(new NPCFarmer(spawnLocation * 32.0f  + glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/farmer.png", "farmer"));
 	}
 	else {
-		int randomNPC =  rand() % 1;
+		int randomNPC =  rand() % 3;
 
-		//ANY VILLAGER
 		switch (randomNPC) {
-
+		case 0: {
+			npcs.push_back(new NPCFarmer(spawnLocation * 32.0f + glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/farmer.png", "farmer"));
+			break;
+		}
+		case 1: {
+			npcs.push_back(new NPCMiner(spawnLocation * 32.0f + glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/miner.png", "miner"));
+			break;
+		}
+		case 2: {
+			npcs.push_back(new NPCLumber(spawnLocation * 32.0f + glm::vec2(24, 24), 3, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->tmap, g_World->chunkMap[{(int)spawnLocation.x / 16, (int)spawnLocation.y / 16, 0}]->treemap, "./assets/game/NPC/lumberjack.png", "lumberjack"));
+			break;
+		}
 		}
 	}
 

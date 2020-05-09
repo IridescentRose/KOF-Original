@@ -16,6 +16,8 @@ src/Core/Village/Village.o \
 src/Core/Village/NPCS/NPCBase.o \
 src/Core/Village/NPCS/NPCSettler.o \
 src/Core/Village/NPCS/NPCFarmer.o \
+src/Core/Village/NPCS/NPCMiner.o \
+src/Core/Village/NPCS/NPCLumberjack.o \
 src/States/MainState.o \
 src/World/Chunk.o \
 src/World/World.o \
@@ -24,7 +26,7 @@ src/Main.o
 
 INCDIR = $(PSPPATH)/include
 INCDIR += ./include
-CFLAGS = -O3 -G0 -g3 -mpreferred-stack-boundary=4 -ffast-math -gdwarf-2 -DKOF_DEBUG
+CFLAGS = -O3 -G0 -g3 -mpreferred-stack-boundary=4 -ffast-math -gdwarf-2 #-DKOF_DEBUG
 CXXFLAGS = $(CFLAGS) -std=gnu++17 -fno-rtti -fno-exceptions 
 ASFLAGS = $(CFLAGS)
 

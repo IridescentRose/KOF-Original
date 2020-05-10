@@ -105,6 +105,8 @@
     <ClCompile Include="src\Core\UI.cpp" />
     <ClCompile Include="src\Core\Village\NPCS\NPCBase.cpp" />
     <ClCompile Include="src\Core\Village\NPCS\NPCFarmer.cpp" />
+    <ClCompile Include="src\Core\Village\NPCS\NPCLumberjack.cpp" />
+    <ClCompile Include="src\Core\Village\NPCS\NPCMiner.cpp" />
     <ClCompile Include="src\Core\Village\NPCS\NPCSettler.cpp" />
     <ClCompile Include="src\Core\Village\Village.cpp" />
     <ClCompile Include="src\GameDialog.cpp" />
@@ -128,6 +130,8 @@
     <ClInclude Include="src\Core\UI.h" />
     <ClInclude Include="src\Core\Village\NPCS\NPCBase.h" />
     <ClInclude Include="src\Core\Village\NPCS\NPCFarmer.h" />
+    <ClInclude Include="src\Core\Village\NPCS\NPCLumberjack.h" />
+    <ClInclude Include="src\Core\Village\NPCS\NPCMiner.h" />
     <ClInclude Include="src\Core\Village\NPCS\NPCSettler.h" />
     <ClInclude Include="src\Core\Village\Village.h" />
     <ClInclude Include="src\GameDialog.h" />

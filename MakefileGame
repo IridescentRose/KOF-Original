@@ -36,7 +36,7 @@ PSP_LARGE_MEMORY = 1
 
 LIBDIR += ./lib
 LDFLAGS =
-LIBS= -lstardust -lpng -lpspaudiolib -lpspaudio -lpspaudiocodec -lintraFont -lz -ljson -lpspgum -lpspgu -lstdc++ -lpsprtc -lpspctrl -lm -lpspvfpu -lpspsdk -lpsppower -lpsphttp -lpspmath
+LIBS= -lstardust -lpng -lpspaudiolib -lpspaudio -lpspaudiocodec -lintraFont -lz -ljson -lpspgum_vfpu -lpspgu -lstdc++ -lpsprtc -lpspctrl -lm -lpspvfpu -lpspsdk -lpsppower -lpsphttp -lpspmath
 
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = Kingdom of Flesh
